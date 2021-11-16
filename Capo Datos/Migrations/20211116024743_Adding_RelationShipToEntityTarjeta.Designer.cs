@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capo_Datos.Migrations
 {
-    [DbContext(typeof(InternetBanking))]
+    [DbContext(typeof(IFactoryDbContext))]
     [Migration("20211116024743_Adding_RelationShipToEntityTarjeta")]
     partial class Adding_RelationShipToEntityTarjeta
     {
