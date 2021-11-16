@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,5 +26,8 @@ namespace Entidades
         public double Disponible { get; set; }
 
         public DateTime? Fecha { get; set; }
+
+        [ForeignKey("Id_TarjetaCredito")]
+        public TarjetaCredito Tarjeta { get; set; }
     }
 }
