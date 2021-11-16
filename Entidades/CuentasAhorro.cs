@@ -11,15 +11,12 @@ namespace Entidades
 {
     public class CuentasAhorro
     {
-        public CuentasAhorro(Usuarios usuarios)
-        {
-            this.Usuario = usuarios;
-        }
+
 
         [Key]
         public int Id { get; set; }
 
-        public int Id_Usuario { get; set; }
+        public string Id_Usuario { get; set; }
 
         public string Codg_Cuenta {  get; set; }
         
