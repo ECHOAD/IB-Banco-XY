@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IB Banco XY", "IB Banco XY\IB Banco XY.csproj", "{7499553E-3E65-4A67-AEF7-00FE41828A50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IB Banco XY", "IB Banco XY\IB Banco XY.csproj", "{7499553E-3E65-4A67-AEF7-00FE41828A50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capa Datos", "Capo Datos\Capa Datos.csproj", "{DE24E944-31D5-4D56-94B7-85071A0AA435}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Capa Datos", "Capo Datos\Capa Datos.csproj", "{DE24E944-31D5-4D56-94B7-85071A0AA435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Negocio", "Negocio\Negocio.csproj", "{479DCCD8-5AB4-4BE1-8DB3-416939B71A97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Negocio", "Negocio\Negocio.csproj", "{479DCCD8-5AB4-4BE1-8DB3-416939B71A97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entidades", "Entidades\Entidades.csproj", "{BF4DB2D1-4C5C-42ED-8270-C20074E165CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Entidades.csproj", "{BF4DB2D1-4C5C-42ED-8270-C20074E165CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contratos", "Contratos\Contratos.csproj", "{0617B822-8444-4A7B-88A5-9D8792356CA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{07BA32DA-6CAC-4B36-8F37-A1D7FA4278A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{BF4DB2D1-4C5C-42ED-8270-C20074E165CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF4DB2D1-4C5C-42ED-8270-C20074E165CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF4DB2D1-4C5C-42ED-8270-C20074E165CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0617B822-8444-4A7B-88A5-9D8792356CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0617B822-8444-4A7B-88A5-9D8792356CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0617B822-8444-4A7B-88A5-9D8792356CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0617B822-8444-4A7B-88A5-9D8792356CA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07BA32DA-6CAC-4B36-8F37-A1D7FA4278A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BA32DA-6CAC-4B36-8F37-A1D7FA4278A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BA32DA-6CAC-4B36-8F37-A1D7FA4278A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BA32DA-6CAC-4B36-8F37-A1D7FA4278A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
