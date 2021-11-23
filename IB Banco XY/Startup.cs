@@ -1,6 +1,6 @@
 using Capo_Datos;
+using Contratos;
 using Entidades;
-using IB_Banco_XY.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,11 @@ namespace IB_Banco_XY
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<InternetBanking>();
             services.AddControllersWithViews();
+
+
+            services.AddScoped<IRepositoryWrapper, RepositoryWapper>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,5 +76,7 @@ namespace IB_Banco_XY
                 endpoints.MapRazorPages();
             });
         }
+
+
     }
 }
