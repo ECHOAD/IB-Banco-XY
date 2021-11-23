@@ -5,12 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repository
 {
-    public abstract class RepositoryBase<T,E> : IRepository<T,E> where T : class where E : class
+    public abstract class RepositoryBase<T,E> : IRepository<T,E> where T : class 
     {
         public InternetBanking _internetBankingContext;
 
