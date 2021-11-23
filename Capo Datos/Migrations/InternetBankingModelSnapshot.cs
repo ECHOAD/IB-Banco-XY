@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capo_Datos.Migrations
 {
-    [DbContext(typeof(IFactoryDbContext))]
+    [DbContext(typeof(InternetBanking))]
     partial class InternetBankingModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

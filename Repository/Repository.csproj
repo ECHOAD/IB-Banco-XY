@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Capo Datos\Capa Datos.csproj" />
     <ProjectReference Include="..\Contratos\Contratos.csproj" />
-    <ProjectReference Include="..\Entidades\Entidades.csproj" />
   </ItemGroup>
 
 </Project>
