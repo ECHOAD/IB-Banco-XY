@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public abstract class RepositoryBase<T,E> : IRepository<T,E> where T : class 
+    public abstract class RepositoryBase<T, E> : IRepository<T, E> where T : class
     {
         public InternetBanking _internetBankingContext;
 
@@ -40,12 +40,12 @@ namespace Repository
 
         public async Task<T> FindById(E id)
         {
-            var obj_entity= await _internetBankingContext.Set<T>().FindAsync(id);
+            var obj_entity = await _internetBankingContext.Set<T>().FindAsync(id);
 
             return obj_entity;
         }
 
-        public async  Task<IQueryable<T>> GetAll()
+        public async Task<IQueryable<T>> GetAll()
         {
             var lst_rows = _internetBankingContext.Set<T>().AsNoTracking();
 

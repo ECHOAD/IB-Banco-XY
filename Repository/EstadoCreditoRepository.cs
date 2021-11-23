@@ -1,4 +1,5 @@
 ﻿using Capo_Datos;
+using Contratos;
 using Entidades;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class EstadoCreditoRepository : RepositoryBase<EstadoCredito, int>
+    public class EstadoCreditoRepository : RepositoryBase<EstadoCredito, int>, IEstadoCreditoRepository
     {
         public EstadoCreditoRepository(InternetBanking internetBankingContext) : base(internetBankingContext)
         {
