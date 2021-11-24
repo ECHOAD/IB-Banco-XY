@@ -10,7 +10,7 @@ namespace Repository
 {
     public class RepositoryWapper : IRepositoryWrapper
     {
-        private InternetBanking _internetBankingContext;
+        private readonly InternetBanking _internetBankingContext;
 
         public RepositoryWapper(InternetBanking internetBankingContext)
         {
