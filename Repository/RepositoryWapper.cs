@@ -92,7 +92,37 @@ namespace Repository
 
         public async Task Save()
         {
-            await _internetBankingContext.SaveChangesAsync();
+            try
+            {
+                await BeginTransaction();
+
+                await _internetBankingContext.SaveChangesAsync();
+
+                await CommitTransactionAsync();
+
+            }
+            catch (Exception)
+            {
+                await RollbackTransactionAsync();
+
+            }
+        }
+
+
+        private async Task BeginTransaction()
+        {
+            _internetBankingContext.Database.BeginTransaction();
+            await Task.CompletedTask;
+        }
+
+        private async Task CommitTransactionAsync()
+        {
+            await _internetBankingContext.Database.CommitTransactionAsync();
+        }
+
+        private async Task RollbackTransactionAsync()
+        {
+            await _internetBankingContext.Database.RollbackTransactionAsync();
         }
     }
 }
