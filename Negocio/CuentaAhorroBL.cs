@@ -44,12 +44,15 @@ namespace Negocio
 
         public async Task Save(CuentasAhorro entity)
         {
+            
             await repositoryWrapper.CuentaAhorroRepository.Create(entity);
+            await repositoryWrapper.Save();
         }
 
         public async Task Update(CuentasAhorro entity)
         {
             await repositoryWrapper.CuentaAhorroRepository.Update(entity);
+            await repositoryWrapper.Save();
         }
     }
 }

@@ -19,5 +19,7 @@ namespace Contratos.BL_Contracts
         Task<CuentasAhorro> FindByID(int id);
 
         Task<List<CuentasAhorro>> FindByCondition(Expression<Func<CuentasAhorro, bool>> expresion);
+
+        Task Update(CuentasAhorro entity);
     }
 }

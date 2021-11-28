@@ -1,4 +1,8 @@
-﻿@model Entidades.CuentasAhorro
+﻿@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims;
+
+
+@model Entidades.CuentasAhorro
 
 @{
     ViewData["Title"] = "Create";
@@ -13,8 +17,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id_Usuario" class="control-label"></label>
-                <select asp-for="Id_Usuario" class ="form-control" asp-items="ViewBag.Id_Usuario"></select>
+                <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value"/>
             </div>
             <div class="form-group">
                 <label asp-for="Codg_Cuenta" class="control-label"></label>
