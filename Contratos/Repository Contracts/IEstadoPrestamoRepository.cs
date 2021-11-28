@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contratos
+namespace Contratos.Repository_Contracts
 {
     public interface IEstadoPrestamoRepository : IRepository<EstadoPrestamo, int>
     {

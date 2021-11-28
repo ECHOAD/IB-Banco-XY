@@ -1,5 +1,5 @@
 using Capo_Datos;
-using Contratos;
+using Contratos.Repository_Contracts;
 using Contratos.BL_Contracts;
 using Entidades;
 using Microsoft.AspNetCore.Builder;

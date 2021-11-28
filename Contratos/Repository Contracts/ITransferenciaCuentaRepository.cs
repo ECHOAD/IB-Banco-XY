@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Contratos.Repository_Contracts
 {
-    public interface ITarjetaCreditoRepository : IRepository<TarjetaCredito, int>
+    public interface ITransferenciaCuentaRepository : IRepository<TransferenciaCuenta, int>
     {
 
     }

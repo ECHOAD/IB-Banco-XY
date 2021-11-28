@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Contratos
+namespace Contratos.Repository_Contracts
 {
     public interface IRepository<T, E>
     {

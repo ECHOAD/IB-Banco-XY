@@ -12,7 +12,7 @@ namespace Contratos.BL_Contracts
     {
         Task<List<CuentasAhorro>> GetAll();
 
-        Task Save(CuentasAhorro entity);
+        Task Save(CuentasAhorro cuentaAhorro);
 
         Task Delete(CuentasAhorro entity);
 

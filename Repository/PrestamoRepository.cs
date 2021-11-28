@@ -1,5 +1,5 @@
 ﻿using Capo_Datos;
-using Contratos;
+using Contratos.Repository_Contracts;
 using Entidades;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Contratos;
+﻿using Contratos.Repository_Contracts;
 using Contratos.BL_Contracts;
 using Entidades;
 using System;
@@ -21,7 +21,12 @@ namespace Negocio
 
         public async Task Delete(CuentasAhorro entity)
         {
+            var transaction = await repositoryWrapper.BeginTransaction();
+
             await repositoryWrapper.CuentaAhorroRepository.Delete(entity);
+            await repositoryWrapper.Save();
+
+            await transaction.CommitAsync();
         }
 
         public async Task<List<CuentasAhorro>> FindByCondition(Expression<Func<CuentasAhorro, bool>> expresion)
@@ -44,15 +49,24 @@ namespace Negocio
 
         public async Task Save(CuentasAhorro entity)
         {
-            
+            var transaction= await repositoryWrapper.BeginTransaction();
+
             await repositoryWrapper.CuentaAhorroRepository.Create(entity);
             await repositoryWrapper.Save();
+            
+            await transaction.CommitAsync();
+
         }
 
         public async Task Update(CuentasAhorro entity)
         {
+
+            var transaction = await repositoryWrapper.BeginTransaction();
+
             await repositoryWrapper.CuentaAhorroRepository.Update(entity);
             await repositoryWrapper.Save();
+
+            await transaction.CommitAsync();
         }
     }
 }

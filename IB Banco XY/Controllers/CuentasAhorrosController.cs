@@ -14,7 +14,7 @@ using System.Security.Claims;
 
 namespace IB_Banco_XY.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CuentasAhorrosController : Controller
     {
         private readonly ICuentaAhorroBL _cuentaAhorroBl;
@@ -111,7 +111,7 @@ namespace IB_Banco_XY.Controllers
             {
                 try
                 {
-                    await _cuentaAhorroBl.Save(cuentasAhorro);
+                    await _cuentaAhorroBl.Update(cuentasAhorro);
 
                 }
                 catch (Exception)
@@ -162,7 +162,14 @@ namespace IB_Banco_XY.Controllers
 
         private async Task<bool> CuentasAhorroExistsAsync(int id)
         {
-            return (await _cuentaAhorroBl.FindByCondition(x => x.Id == id)).Count() == 0;
+            return (await _cuentaAhorroBl.FindByID(id)) != null;
+        }
+
+        [HttpGet("GetAccountByNumber")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult<CuentasAhorro>> GetAccountByNumber(string accountNumber)
+        {
+            return (await _cuentaAhorroBl.FindByCondition(x => x.Codg_Cuenta == accountNumber)).ToList().First();
         }
     }
 }
