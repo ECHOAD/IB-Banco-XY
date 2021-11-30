@@ -8,16 +8,23 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>CuentasAhorro</h4>
-<hr />
+<section class="container" id="FormHead">
+    <div class="row">
+        <div class="col-12">
+            <h2>Creacion de cuenta</h2>
+        </div>
+    </div>
+</section>
+
+
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-lg-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value"/>
+                <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
             </div>
             <div class="form-group">
                 <label asp-for="Codg_Cuenta" class="control-label"></label>
@@ -41,5 +48,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

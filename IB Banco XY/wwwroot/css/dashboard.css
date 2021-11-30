@@ -1,0 +1,80 @@
+﻿
+#welcomeContainer {
+    margin: 25px;
+}
+
+#bienvenidaUser {
+    text-align: right;
+}
+
+p {
+    font-size: 20px;
+}
+
+#welcomeContainer {
+    border-radius: 10px;
+}
+
+.btn-acd {
+    font-size: 30px;
+}
+
+    .btn-acd:focus, .btn-acd.focus {
+        box-shadow: none;
+    }
+
+#accordionInfo .infocard {
+    background : rgba(222, 222, 223, 0.157);
+}
+
+    #accordionInfo .card .card-header {
+        background: none;
+        border: none;
+    }
+
+.card_detail{
+    background:rgba(228, 219, 219, 0.52);
+    border-radius:10px;
+    margin:5px;
+    box-shadow: 10px 10px rgba(20, 94, 255, 0.472);
+}
+
+
+.cardsAccount{
+    border:none;
+    margin-top: 12px;
+}
+
+.cardButton{
+    width:100%;
+    height: 100px;
+    background-color: rgba(190, 10, 10, 0.726);
+    box-shadow: 15px -10px rgba(115, 119, 128, 0.472);
+
+
+}
+
+.btnAcciones{
+    margin-top:5%;
+    
+}
+
+.btn-agregar{
+    color:white;
+    font-style: double;
+    font-size: 15px;
+    background-color: rgba(20, 69, 202, 0.705);
+    box-shadow: 1px 2px rgba(115, 119, 128, 0.472);
+    height: 60%;
+
+}
+
+.cardTitle{
+    font-size: 20px;
+    
+}
+
+.cardButton:focus, .cardButton.focus {
+    border: none;
+    border-color:none;
+}

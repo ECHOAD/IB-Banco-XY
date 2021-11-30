@@ -29,16 +29,6 @@ namespace IB_Banco_XY.Controllers
             this.UserManager = userManager;
         }
 
-        // GET: CuentasAhorros
-        public async Task<IActionResult> Index()
-        {
-
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            var lst_acconts_perUser = await _cuentaAhorroBl.FindByCondition(x => x.Id_Usuario == userId);
-
-            return View(lst_acconts_perUser);
-        }
 
         // GET: CuentasAhorros/Details/5
         public async Task<IActionResult> Details(int? id)
