@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject ICuentaAhorroBL cuentaAhorroBL
+
+
+@{
+    ViewData["Title"] = "DashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var accounts_User = (await cuentaAhorroBL.GetAll()).
+    Where(x => x.Id_Usuario == User.Claims.First().Value).ToList();
+
+    var active = accounts_User.Sum(x => x.Balance_Actual);
+
+
+}
+<link rel="stylesheet" href="~/css/dashboard.css" />
+
+
+<section class="container" id="welcomeContainer">
+    <div class="rows">
+        <div class="col-12" id="bienvenida">
+            <h2 id="bienvenidaUser"> Bienvenido @User.Identity.Name</h2>
+            <p style="text-align:center">@DateTime.Now.ToLongDateString()</p>
+        </div>
+    </div>
+</section>
+
+<section class="container" id="productsContainer">
+
+    <div id="accordionInfo">
+        <div class="card infocard">
+            <div class="card-header" id="headingSummary">
+                <button class="btn btn-acd" data-toggle="collapse" data-target="#collapseSummary" aria-expanded="true" aria-controls="collapseSummary">
+                    <h2 class="cardTitle">Resumen</h2>
+                </button>
+            </div>
+            <div id="collapseSummary" class="collapse show" aria-labelledby="headingSummary" data-parent="#accordionInfo">
+                <div class="card-body" id="summary">
+                    <h5 class="bg-success text-white" style="border-radius:30px; padding:10px;">Activos @active.ToString("C",CultureInfo.CurrentCulture)  </h5>
+
+                </div>
+            </div>
+        </div>
+        <div class="card infocard">
+            <div class="card-header" id="headingAccounts">
+                <button class="btn btn-acd" data-toggle="collapse" data-target="#collapseAccounts" aria-expanded="true" aria-controls="collapseAccounts">
+                    <h2 class="cardTitle">Cuentas Bancarias</h2>
+                </button>
+            </div>
+            <div id="collapseAccounts" class="collapse show" aria-labelledby="headingAccounts" data-parent="#accordionInfo">
+                <div class="card-body" id="accounts">
+                    @if (accounts_User.Count == 0)
+                    {
+                        <div class="col-sm-12 col-md-6 col-lg-4">
+                            <div class="card card_detail cardsAccount">
+                                <div class="card-body">
+                                    <h5 class="card-title">Usted no cuenta con cuentas</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><strong>Desea crear una ?</strong></h6>
+                                    <a href="#" class="card-link">Crear</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @await Html.PartialAsync("ListOfAccounts",accounts_User)
+
+                    @if (accounts_User.Count != 0)
+                    {
+
+
+                        <div class="btnAcciones">
+                            <button class=" col-12 btn btn-agregar"> Crear Nueva Cuenta</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card infocard">
+            <div class="card-header" id="headingCredits">
+                <button class="btn btn-acd" data-toggle="collapse" data-target="#collapseCredits" aria-expanded="true" aria-controls="collapseCredits">
+                    <h2 class="cardTitle">Cuentas de Credito</h2>
+                </button>
+            </div>
+            <div id="collapseCredits" class="collapse show" aria-labelledby="headingCredits" data-parent="#accordionInfo">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+        <div class="card infocard">
+            <div class="card-header" id="headingPrestamos">
+                <button class="btn btn-acd" data-toggle="collapse" data-target="#collapsePrestamo" aria-expanded="true" aria-controls="collapsePrestamo">
+                    <h2 class="cardTitle">Prestamos Activos</h2>
+                </button>
+            </div>
+            <div id="collapsePrestamo" class="collapse show" aria-labelledby="headingPrestamos" data-parent="#accordionInfo">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts{
+
+
+
+<script src="~/js/dashboard.js"></script>
+}

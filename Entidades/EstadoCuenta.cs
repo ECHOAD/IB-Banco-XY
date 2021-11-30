@@ -32,7 +32,7 @@ namespace Entidades
 
 
         [ForeignKey("Id_cuenta")]
-        public CuentasAhorro cuenta { get; set; }
+        public CuentasAhorro Cuenta { get; set; }
 
 
     }

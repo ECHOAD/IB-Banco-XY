@@ -7,24 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Capo_Datos;
 using Entidades;
+using Contratos.BL_Contracts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace IB_Banco_XY.Controllers
 {
+    //[Authorize]
     public class CuentasAhorrosController : Controller
     {
-        private readonly InternetBanking _context;
+        private readonly ICuentaAhorroBL _cuentaAhorroBl;
+        private readonly UserManager<IdentityUser> UserManager;
 
-        public CuentasAhorrosController(InternetBanking context)
+
+
+        public CuentasAhorrosController(ICuentaAhorroBL cuentaAhorroBL,
+            UserManager<IdentityUser> userManager)
         {
-            _context = context;
+            this._cuentaAhorroBl = cuentaAhorroBL;
+            this.UserManager = userManager;
         }
 
-        // GET: CuentasAhorros
-        public async Task<IActionResult> Index()
-        {
-            var internetBanking = _context.CuentasAhorro.Include(c => c.Usuario);
-            return View(await internetBanking.ToListAsync());
-        }
 
         // GET: CuentasAhorros/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -34,9 +38,7 @@ namespace IB_Banco_XY.Controllers
                 return NotFound();
             }
 
-            var cuentasAhorro = await _context.CuentasAhorro
-                .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cuentasAhorro = await _cuentaAhorroBl.FindByID(id.Value);
             if (cuentasAhorro == null)
             {
                 return NotFound();
@@ -48,7 +50,6 @@ namespace IB_Banco_XY.Controllers
         // GET: CuentasAhorros/Create
         public IActionResult Create()
         {
-            ViewData["Id_Usuario"] = new SelectList(_context.Set<Usuarios>(), "Id", "Id");
             return View();
         }
 
@@ -61,11 +62,9 @@ namespace IB_Banco_XY.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cuentasAhorro);
-                await _context.SaveChangesAsync();
+                await _cuentaAhorroBl.Save(cuentasAhorro);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Usuario"] = new SelectList(_context.Set<Usuarios>(), "Id", "Id", cuentasAhorro.Id_Usuario);
             return View(cuentasAhorro);
         }
 
@@ -76,13 +75,13 @@ namespace IB_Banco_XY.Controllers
             {
                 return NotFound();
             }
+            var cuentasAhorro = await _cuentaAhorroBl.FindByID(id.Value);
 
-            var cuentasAhorro = await _context.CuentasAhorro.FindAsync(id);
             if (cuentasAhorro == null)
             {
                 return NotFound();
             }
-            ViewData["Id_Usuario"] = new SelectList(_context.Set<Usuarios>(), "Id", "Id", cuentasAhorro.Id_Usuario);
+
             return View(cuentasAhorro);
         }
 
@@ -102,12 +101,12 @@ namespace IB_Banco_XY.Controllers
             {
                 try
                 {
-                    _context.Update(cuentasAhorro);
-                    await _context.SaveChangesAsync();
+                    await _cuentaAhorroBl.Update(cuentasAhorro);
+
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception)
                 {
-                    if (!CuentasAhorroExists(cuentasAhorro.Id))
+                    if (!await CuentasAhorroExistsAsync(cuentasAhorro.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +117,6 @@ namespace IB_Banco_XY.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id_Usuario"] = new SelectList(_context.Set<Usuarios>(), "Id", "Id", cuentasAhorro.Id_Usuario);
             return View(cuentasAhorro);
         }
 
@@ -130,15 +128,14 @@ namespace IB_Banco_XY.Controllers
                 return NotFound();
             }
 
-            var cuentasAhorro = await _context.CuentasAhorro
-                .Include(c => c.Usuario)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuentasAhorro == null)
+            var ActualObj = await _cuentaAhorroBl.FindByID(id.Value);
+
+            if (ActualObj == null)
             {
                 return NotFound();
             }
 
-            return View(cuentasAhorro);
+            return View(ActualObj);
         }
 
         // POST: CuentasAhorros/Delete/5
@@ -146,15 +143,23 @@ namespace IB_Banco_XY.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cuentasAhorro = await _context.CuentasAhorro.FindAsync(id);
-            _context.CuentasAhorro.Remove(cuentasAhorro);
-            await _context.SaveChangesAsync();
+            var cuentasAhorro = await _cuentaAhorroBl.FindByID(id);
+            await _cuentaAhorroBl.Delete(cuentasAhorro);
+
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CuentasAhorroExists(int id)
+        private async Task<bool> CuentasAhorroExistsAsync(int id)
         {
-            return _context.CuentasAhorro.Any(e => e.Id == id);
+            return (await _cuentaAhorroBl.FindByID(id)) != null;
+        }
+
+        [HttpGet("GetAccountByNumber")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult<CuentasAhorro>> GetAccountByNumber(string accountNumber)
+        {
+            return (await _cuentaAhorroBl.FindByCondition(x => x.Codg_Cuenta == accountNumber)).ToList().First();
         }
     }
 }

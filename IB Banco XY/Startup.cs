@@ -1,5 +1,6 @@
 using Capo_Datos;
-using Contratos;
+using Contratos.Repository_Contracts;
+using Contratos.BL_Contracts;
 using Entidades;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Negocio;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -42,6 +44,8 @@ namespace IB_Banco_XY
 
 
             services.AddScoped<IRepositoryWrapper, RepositoryWapper>();
+
+            services.AddScoped<ICuentaAhorroBL, CuentaAhorroBL>();
 
 
         }

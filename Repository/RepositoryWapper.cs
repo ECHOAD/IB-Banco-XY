@@ -1,5 +1,6 @@
 ﻿using Capo_Datos;
-using Contratos;
+using Contratos.Repository_Contracts;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Repository
 {
     public class RepositoryWapper : IRepositoryWrapper
     {
-        private InternetBanking _internetBankingContext;
+        private readonly InternetBanking _internetBankingContext;
 
         public RepositoryWapper(InternetBanking internetBankingContext)
         {
@@ -24,6 +25,7 @@ namespace Repository
         private IEstadoCreditoRepository _estadoCreditoRepository;
         private ICuentaAhorroRepository _cuentaRepository;
         private IPrestamoRepository _prestamoRepository;
+        private ITransferenciaCuentaRepository _transferenciaCuentaRepository;
 
         public ITarjetaCreditoRepository TarjetaCreditoRepository
         {
@@ -38,7 +40,7 @@ namespace Repository
             }
         }
 
-        public IEstadoPrestamoRepository EstadoCreditoRepository
+        public IEstadoPrestamoRepository EstadoPrestamoRepository
         {
             get
             {
@@ -68,7 +70,7 @@ namespace Repository
         {
             get
             {
-                if (_estadoCreditoRepository == null)
+                if (_cuentaRepository == null)
                 {
                     _cuentaRepository = new CuentasAhorroRepository(_internetBankingContext);
                 }
@@ -76,6 +78,7 @@ namespace Repository
 
             }
         }
+
 
         public IPrestamoRepository PrestamoRepository
         {
@@ -89,10 +92,60 @@ namespace Repository
             }
         }
 
+        public IEstadoCreditoRepository EstadoCreditoRepository
+        {
+            get
+            {
+                if (_estadoCreditoRepository == null)
+                {
+                    _estadoCreditoRepository = new EstadoCreditoRepository(_internetBankingContext); ;
+                }
+                return _estadoCreditoRepository;
+            }
+        }
+
+        public ITransferenciaCuentaRepository TransferenciaCuentaRepository
+        {
+            get
+            {
+                if (_transferenciaCuentaRepository == null)
+                {
+                    _transferenciaCuentaRepository = new TransferenciaCuentaRepository(_internetBankingContext);
+                }
+                return _transferenciaCuentaRepository;
+            }
+        }
 
         public async Task Save()
         {
-            await _internetBankingContext.SaveChangesAsync();
+            try
+            {
+                await _internetBankingContext.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                await RollbackTransactionAsync();
+            }
         }
+
+
+        public async Task<IDbContextTransaction> BeginTransaction()
+        {
+            return await _internetBankingContext.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            await _internetBankingContext.Database.CommitTransactionAsync();
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            await _internetBankingContext.Database.RollbackTransactionAsync();
+        }
+
+
+
     }
 }

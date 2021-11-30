@@ -1,5 +1,5 @@
 ﻿using Capo_Datos;
-using Contratos;
+using Contratos.Repository_Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace Repository
 {
     public abstract class RepositoryBase<T, E> : IRepository<T, E> where T : class
     {
-        public InternetBanking _internetBankingContext;
+        private readonly InternetBanking _internetBankingContext;
 
         public RepositoryBase(InternetBanking internetBankingContext)
         {

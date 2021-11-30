@@ -1,0 +1,22 @@
+﻿@model List<CuentasAhorro>
+
+<div class="container" id="cardsAccounts">
+    <div class="row">
+     
+            @foreach (var account in Model)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card card_detail cardsAccount">
+                        <div class="card-body">
+                            <h5 class="card-title">Numero de Cuenta: @account.Codg_Cuenta</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Balance Actual @account.Balance_Actual.ToString("C",CultureInfo.CurrentCulture)</h6>
+                            <a href="#" class="card-link">Estado de Cuenta</a>
+                            <a href="#" class="card-link">Transferencia</a>
+                        </div>
+                    </div>
+                </div>
+           
+            }
+        
+    </div>
+</div>
