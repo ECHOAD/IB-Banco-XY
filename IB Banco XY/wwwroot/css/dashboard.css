@@ -36,7 +36,7 @@ p {
     background:rgba(228, 219, 219, 0.52);
     border-radius:10px;
     margin:5px;
-    box-shadow: 10px 10px rgba(20, 94, 255, 0.472);
+    box-shadow: 3px 3px rgba(40, 40, 41, 0.178);
 }
 
 
@@ -45,23 +45,21 @@ p {
     margin-top: 12px;
 }
 
-.cardButton{
-    width:100%;
-    height: 100px;
-    background-color: rgba(190, 10, 10, 0.726);
-    box-shadow: 15px -10px rgba(115, 119, 128, 0.472);
-
-
+.btn:hover {
+    color: #cbcbcf;
+    text-decoration: none;
 }
 
 .btnAcciones{
-    margin-top:5%;
+    margin-top: 30px;
     
 }
 
+
+
 .btn-agregar{
-    color:white;
-    font-style: double;
+    color:#fff;
+    font-weight:bold;
     font-size: 15px;
     background-color: rgba(20, 69, 202, 0.705);
     box-shadow: 1px 2px rgba(115, 119, 128, 0.472);

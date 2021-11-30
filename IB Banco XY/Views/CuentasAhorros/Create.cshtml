@@ -8,47 +8,82 @@
     ViewData["Title"] = "Create";
 }
 
+@section CSS{
+<link rel="stylesheet" href="~/css/forms.css" />
 
-<section class="container" id="FormHead">
+}
+
+
+<section class="container" id="formContainer">
     <div class="row">
-        <div class="col-12">
-            <h2>Creacion de cuenta</h2>
+        <div class="container btn-controls">
+            <div clas="row">
+                <div>
+                    <a class="btn btn-control" href="/dashboard">
+                        <i class="bi bi-arrow-left-circle-fill icon">
+                        </i>
+                    </a>
+                </div>
+            </div>
         </div>
+        <div class="col-12 form-header">
+            <h2 class="title_formHeader">Creacion de cuenta</h2>
+        </div>
+    </div>
+    <div class="col-12">
+        <form asp-action="Create" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
+
+            <div class="form-group col-sm-12 ">
+                <label asp-for="Codg_Cuenta" class="label_form">Numero de Cuenta</label>
+                <p class="form-info-detail">@Model.Codg_Cuenta</p>
+            </div>
+
+            <div class="form-group col-sm-12 ">
+                <label asp-for="Balance_Actual" class="label_form">Balance de Apertura</label>
+
+                <input class="form-control inputs input-money" id="balanceActualMask" unmaskRef="#balanceActual" value="0" />
+                <input asp-for="Balance_Actual" type="hidden" id="balanceActual" />
+
+                <span asp-validation-for="Balance_Actual" class="text-danger"></span>
+            </div>
+            <div class="form-group btn-action col-12">
+                <input type="button" value="Crear Cuenta" class="btn btn-submit col-12" />
+            </div>
+        </form>
     </div>
 </section>
 
 
 
-<div class="row">
-    <div class="col-lg-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Codg_Cuenta" class="control-label"></label>
-                <input asp-for="Codg_Cuenta" class="form-control" />
-                <span asp-validation-for="Codg_Cuenta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Balance_Actual" class="control-label"></label>
-                <input asp-for="Balance_Actual" class="form-control" />
-                <span asp-validation-for="Balance_Actual" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
 }
+
+<script>
+    $(document).ready(function(){
+
+    $('.input-money').change((evt)=>{
+
+      evt.preventDefault();
+      evt.stopPropagation();
+
+      let idNewTarget= evt.target.getAttribute("unmaskRef");
+
+      $(idNewTarget).val($("#"+evt.target.id).cleanVal())
+
+    });
+
+
+    $('.input-money').mask('#####$',{reverse:true});
+
+
+    });
+</script>
 }

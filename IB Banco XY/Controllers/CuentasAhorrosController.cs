@@ -10,7 +10,7 @@ using Entidades;
 using Contratos.BL_Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+using Contratos.Helpers;
 
 namespace IB_Banco_XY.Controllers
 {
@@ -19,14 +19,17 @@ namespace IB_Banco_XY.Controllers
     {
         private readonly ICuentaAhorroBL _cuentaAhorroBl;
         private readonly UserManager<IdentityUser> UserManager;
+        private readonly INumberGenerator<CuentasAhorro> _numberGenerator;
 
 
 
         public CuentasAhorrosController(ICuentaAhorroBL cuentaAhorroBL,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            INumberGenerator<CuentasAhorro> numberGenerator)
         {
             this._cuentaAhorroBl = cuentaAhorroBL;
             this.UserManager = userManager;
+            this._numberGenerator = numberGenerator;
         }
 
 
@@ -48,9 +51,16 @@ namespace IB_Banco_XY.Controllers
         }
 
         // GET: CuentasAhorros/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            CuentasAhorro cuentaAhorro;
+
+
+
+            cuentaAhorro = new CuentasAhorro { Id_Usuario = User.Claims.First().Value, Codg_Cuenta = _numberGenerator.Generate_a_Code() };
+
+            return await Task.Run(() => View(cuentaAhorro));
+
         }
 
         // POST: CuentasAhorros/Create
@@ -161,5 +171,6 @@ namespace IB_Banco_XY.Controllers
         {
             return (await _cuentaAhorroBl.FindByCondition(x => x.Codg_Cuenta == accountNumber)).ToList().First();
         }
+
     }
 }

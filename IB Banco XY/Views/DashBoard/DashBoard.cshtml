@@ -10,10 +10,11 @@
     Where(x => x.Id_Usuario == User.Claims.First().Value).ToList();
 
     var active = accounts_User.Sum(x => x.Balance_Actual);
-
-
 }
-<link rel="stylesheet" href="~/css/dashboard.css" />
+
+@section CSS{
+<link rel="stylesheet" href=~/css/dashboard.css />
+}
 
 
 <section class="container" id="welcomeContainer">
@@ -56,20 +57,20 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Usted no cuenta con cuentas</h5>
                                     <h6 class="card-subtitle mb-2 text-muted"><strong>Desea crear una ?</strong></h6>
-                                    <a href="#" class="card-link">Crear</a>
-
                                 </div>
                             </div>
                         </div>
                     }
-                    @await Html.PartialAsync("ListOfAccounts",accounts_User)
-
+                    else
+                    {
+                        @await Html.PartialAsync("ListOfAccounts",accounts_User)
+                    }
                     @if (accounts_User.Count != 0)
                     {
 
 
-                        <div class="btnAcciones">
-                            <button class=" col-12 btn btn-agregar"> Crear Nueva Cuenta</button>
+                        <div class=" col-12 btnAcciones">
+                            <a href="/CuentasAhorros/Create" class=" col-12 btn btn-agregar"> Crear Nueva Cuenta</a>
                         </div>
 
                     }
