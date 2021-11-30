@@ -17,6 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contratos.Helpers;
+using IB_Banco_XY.Helpers;
 
 namespace IB_Banco_XY
 {
@@ -46,6 +48,8 @@ namespace IB_Banco_XY
             services.AddScoped<IRepositoryWrapper, RepositoryWapper>();
 
             services.AddScoped<ICuentaAhorroBL, CuentaAhorroBL>();
+
+            ConfigureHelpers(services);
 
 
         }
@@ -81,6 +85,11 @@ namespace IB_Banco_XY
             });
         }
 
+
+        public void ConfigureHelpers(IServiceCollection service)
+        {
+            service.AddScoped<INumberGenerator<CuentasAhorro>, AccountNumberGenerator>();
+        }
 
     }
 }
