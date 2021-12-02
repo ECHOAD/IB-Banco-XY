@@ -11,6 +11,8 @@ using Contratos.BL_Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Contratos.Helpers;
+using System.Text.Json;
+using System.Dynamic;
 
 namespace IB_Banco_XY.Controllers
 {
@@ -20,16 +22,17 @@ namespace IB_Banco_XY.Controllers
         private readonly ICuentaAhorroBL _cuentaAhorroBl;
         private readonly UserManager<IdentityUser> UserManager;
         private readonly INumberGenerator<CuentasAhorro> _numberGenerator;
-
-
+        private readonly IEstadoCuentaBL _estadoCuentaBl;
 
         public CuentasAhorrosController(ICuentaAhorroBL cuentaAhorroBL,
             UserManager<IdentityUser> userManager,
-            INumberGenerator<CuentasAhorro> numberGenerator)
+            INumberGenerator<CuentasAhorro> numberGenerator,
+            IEstadoCuentaBL estadoCuentaBL)
         {
             this._cuentaAhorroBl = cuentaAhorroBL;
             this.UserManager = userManager;
             this._numberGenerator = numberGenerator;
+            this._estadoCuentaBl = estadoCuentaBL;
         }
 
 
@@ -73,7 +76,7 @@ namespace IB_Banco_XY.Controllers
             if (ModelState.IsValid)
             {
                 await _cuentaAhorroBl.Save(cuentasAhorro);
-                return RedirectToAction(nameof(Index));
+                return LocalRedirect("/dashboard");
             }
             return View(cuentasAhorro);
         }
@@ -170,6 +173,65 @@ namespace IB_Banco_XY.Controllers
         public async Task<ActionResult<CuentasAhorro>> GetAccountByNumber(string accountNumber)
         {
             return (await _cuentaAhorroBl.FindByCondition(x => x.Codg_Cuenta == accountNumber)).ToList().First();
+        }
+
+        [Route("Partial/AccountDetailsCard")]
+        public async Task<IActionResult> AccountDetailsCard(string id_campo, string no_cuenta)
+        {
+
+            if (id_campo == null && no_cuenta == null)
+                return NotFound();
+
+            ViewData["id_Campo"] = id_campo;
+            ViewData["no_cuenta"] = no_cuenta;
+
+
+            return await Task.Run(() => PartialView("AccountDetails"));
+        }
+
+        [HttpGet]
+        [Route("cuenta/estadoCuenta")]
+        public async Task<IActionResult> EstadoDeCuenta([FromBody] JsonDocument Solicitud)
+        {
+
+            try
+            {
+
+
+
+                var param = Solicitud.RootElement;
+
+                var id_cuenta = param.GetProperty("id_cuenta").GetInt32();
+
+                var desde = param.GetProperty("desde").GetDateTime();
+
+                var hasta = param.GetProperty("hasta").GetDateTime();
+
+
+                var EstadosCuentas = (await _estadoCuentaBl.FindByCondition(x => x.Id_cuenta == id_cuenta && x.Fecha > desde && x.Fecha < hasta)).ToList();
+
+                return Ok(EstadosCuentas);
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = -1, Message = "Hubo un fallo con la peticion " + e.Message });
+
+            }
+
+
+
+
+
+
+
+            //var estadosDeCuenta = (await _estadoCuentaBl.FindByCondition(x => x.Fecha >= param2
+            //&& x.Fecha <= param3 && x.Id == param1)).ToList();
+
+
+
+            //return await Task.Run(() => View());
         }
 
     }

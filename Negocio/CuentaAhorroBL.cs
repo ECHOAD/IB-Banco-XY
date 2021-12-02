@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Negocio
 {
@@ -33,7 +35,7 @@ namespace Negocio
         {
             var lst_rows = await repositoryWrapper.CuentaAhorroRepository.FindByCondition(expresion);
 
-            return lst_rows.ToList();
+            return lst_rows.Include(x => x.Usuario).ToList();
 
         }
 
@@ -49,24 +51,13 @@ namespace Negocio
 
         public async Task Save(CuentasAhorro entity)
         {
-            var transaction= await repositoryWrapper.BeginTransaction();
-
             await repositoryWrapper.CuentaAhorroRepository.Create(entity);
-            await repositoryWrapper.Save();
-            
-            await transaction.CommitAsync();
-
         }
 
         public async Task Update(CuentasAhorro entity)
         {
-
-            var transaction = await repositoryWrapper.BeginTransaction();
-
             await repositoryWrapper.CuentaAhorroRepository.Update(entity);
-            await repositoryWrapper.Save();
 
-            await transaction.CommitAsync();
         }
     }
 }

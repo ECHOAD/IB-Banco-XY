@@ -1,0 +1,35 @@
+﻿@using Contratos;
+@inject ICuentaAhorroBL cuenta_ahorroBL;
+@{
+    string acount_number = ViewData.ContainsKey("no_cuenta") ? (string)ViewData["no_cuenta"] : "";
+
+    string input_value = ViewData.ContainsKey("id_campo") ? (string)ViewData["id_campo"] : "";
+
+
+    CuentasAhorro cuenta_origen = (await cuenta_ahorroBL.FindByCondition(x => x.Codg_Cuenta == acount_number)).First();
+
+}
+
+<style>
+    .cardsAccountDetail {
+        border: none;
+        border-radius: 15px;
+        box-shadow: -2px 0px 12px 5px rgba(0, 0, 0, 0.002);
+    }
+
+</style>
+
+@if (input_value != "")
+{
+    <input id="@input_value" value="@cuenta_origen.Id" type="hidden" />
+}
+
+<div class="card card_detail cardsAccountDetail">
+    <div class="card-body">
+    
+        <h5 class="card-title">Cuenta Bancaria</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Numero de cuenta: <strong>@cuenta_origen.Codg_Cuenta</strong></h6>
+        <h6 class="card-subtitle mb-2 text-muted">Balance Actual: <strong style="color:@(cuenta_origen.Balance_Actual > 0? "green":"red")">@cuenta_origen.Balance_Actual.ToString("C", CultureInfo.CurrentCulture)</strong></h6>
+
+    </div>
+</div>

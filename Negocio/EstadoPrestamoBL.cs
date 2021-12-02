@@ -1,0 +1,44 @@
+﻿using Contratos.BL_Contracts;
+using Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Negocio
+{
+    public class EstadoPrestamoBL : IEstadoPrestamoBL
+    {
+        public Task Delete(EstadoPrestamo entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EstadoPrestamo>> FindByCondition(Expression<Func<EstadoPrestamo, bool>> expresion)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<EstadoPrestamo> FindByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EstadoPrestamo>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Save(EstadoPrestamo cuentaAhorro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Update(EstadoPrestamo entity)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
