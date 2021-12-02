@@ -1,5 +1,4 @@
-﻿
-#welcomeContainer {
+﻿#welcomeContainer {
     margin: 25px;
 }
 
@@ -19,29 +18,39 @@ p {
     font-size: 30px;
 }
 
-    .btn-acd:focus, .btn-acd.focus {
-        box-shadow: none;
-    }
-
-#accordionInfo .infocard {
-    background : rgba(222, 222, 223, 0.157);
+.btn-acd:focus,
+.btn-acd.focus {
+    box-shadow: none;
+    color: rgba(33, 33, 236, 0.856);
 }
 
-    #accordionInfo .card .card-header {
-        background: none;
-        border: none;
-    }
+.btn-acd:active {
+    color: rgba(33, 33, 236, 0.856);
+}
 
-.card_detail{
-    background:rgba(228, 219, 219, 0.52);
-    border-radius:10px;
-    margin:5px;
+#accordionInfo {
+    box-shadow: -2px 0px 12px 5px rgba(0, 0, 0, 0.219);
+    border-radius: 10px;
+}
+
+#accordionInfo .infocard {
+    background: rgba(222, 222, 223, 0.157);
+}
+
+#accordionInfo .card .card-header {
+    background: none;
+    border: none;
+}
+
+.card_detail {
+    background: rgba(228, 219, 219, 0.52);
+    border-radius: 10px;
+    margin: 5px;
     box-shadow: 3px 3px rgba(40, 40, 41, 0.178);
 }
 
-
-.cardsAccount{
-    border:none;
+.cardsAccount {
+    border: none;
     margin-top: 12px;
 }
 
@@ -50,29 +59,25 @@ p {
     text-decoration: none;
 }
 
-.btnAcciones{
+.btnAcciones {
     margin-top: 30px;
-    
 }
 
-
-
-.btn-agregar{
-    color:#fff;
-    font-weight:bold;
+.btn-agregar {
+    color: #fff;
+    font-weight: bold;
     font-size: 15px;
     background-color: rgba(20, 69, 202, 0.705);
     box-shadow: 1px 2px rgba(115, 119, 128, 0.472);
     height: 60%;
-
 }
 
-.cardTitle{
+.cardTitle {
     font-size: 20px;
-    
 }
 
-.cardButton:focus, .cardButton.focus {
+.cardButton:focus,
+.cardButton.focus {
     border: none;
-    border-color:none;
+    border-color: none;
 }

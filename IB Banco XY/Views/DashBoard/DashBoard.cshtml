@@ -63,7 +63,8 @@
                     }
                     else
                     {
-                        @await Html.PartialAsync("ListOfAccounts",accounts_User)
+                        @await Html.PartialAsync("Partials/BankAccounts/ListOfAccounts"
+                        ,accounts_User)
                     }
                     @if (accounts_User.Count != 0)
                     {
@@ -80,7 +81,7 @@
         <div class="card infocard">
             <div class="card-header" id="headingCredits">
                 <button class="btn btn-acd" data-toggle="collapse" data-target="#collapseCredits" aria-expanded="true" aria-controls="collapseCredits">
-                    <h2 class="cardTitle">Cuentas de Credito</h2>
+                    <h2 class="cardTitle">Tarjetas de Credito</h2>
                 </button>
             </div>
             <div id="collapseCredits" class="collapse show" aria-labelledby="headingCredits" data-parent="#accordionInfo">

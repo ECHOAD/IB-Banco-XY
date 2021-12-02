@@ -1,0 +1,123 @@
+﻿@model Entidades.TransferenciaCuenta
+@inject ICuentaAhorroBL cuentaAhorrro;
+
+@{
+    ViewData["Title"] = "Transacciones";
+
+    string origin_acount_number = ViewData.ContainsKey("account") ? (string)ViewData["account"] : "";
+    int idCuentaOrigen = (await cuentaAhorrro.FindByCondition(x => x.Codg_Cuenta == origin_acount_number)).Select(x => x.Id).First();
+}
+
+@section CSS{
+<link rel="stylesheet" href="~/css/forms.css" />
+
+
+
+<style>
+    .sectionControl {
+        padding: 30px;
+    }
+
+
+    @@media (max-width: 600px) and (min-width:200px) {
+        #formContainer {
+            height: 600px;
+            width: calc(var(--vh, 1vh) * 40);
+            padding: 0;
+        }
+
+        .navbar {
+            width: calc(var(--vh, 1vh) * 43);
+        }
+
+        .btn-action {
+            margin-top: 150px;
+        }
+    }
+
+</style>
+
+}
+
+
+
+<section class="container" id="formContainer">
+    <div class="row">
+        <div class="container btn-controls">
+            <div clas="row">
+                <div>
+                    <a class="btn btn-control" href="/dashboard">
+                        <i class="bi bi-arrow-left-circle-fill icon">
+                        </i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 form-header">
+            <h2 class="title_formHeader">Transacciones</h2>
+        </div>
+    </div>
+    <div class="col-12">
+        <form asp-action="/transact/create" class="form" id="formTransact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <input name="Id_CuentaOrigen" type="hidden" value="@idCuentaOrigen" id="cuentaOrigenInput" required />
+            <input name="Id_CuentaDestino" type="hidden" value="" id="cuentaDestinoInput" required />
+
+            <div class="col-sm-12 col-md-6" id="cuenta_origen">
+                <h6>Origen</h6>
+                @await Html.PartialAsync("Partials/BankAccounts/AccountDetails",null, new ViewDataDictionary (ViewData)
+                {{"no_cuenta",origin_acount_number }, {"id_balance","balanceOrigen"}})
+
+            </div>
+
+            <div class="col-sm-12 col-md-6" id="cuenta_destino">
+                <h6>Destino</h6>
+                <div id="cuentaDestino">
+                    <div class="card card_detail cardsAccountDetail">
+                        <div class="card-body">
+                            <h5 class="card-title">Escriba el numero de cuenta a transferir</h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-12 mt-4">
+
+                <input class="form-control inputs" id="no_cuenta_destino" style="border-radius:2px;"
+                       placeholder="Digite el numero de cuenta Destinatario" />
+                <button class="btn btn-submit" type="button" id="buscadorCuenta" style="background:rgba(255, 0, 0, 0.534);">Solicitar</button>
+            </div>
+
+
+            <div class="form-group col-sm-12 mt-2" id="sectionControl">
+                <input class="form-control inputs input-money" placeholder="Cantidad a Transferir" style="border-radius:4px;" id="MontoMask" unmaskRef="#monto" value="" required />
+
+                <input asp-for="MontoActual" type="hidden" style="display:none" id="monto" />
+
+                <span asp-validation-for="MontoActual" class="text-danger"></span>
+                <input type="button" value="Transferir" onclick="PostTransaccion()" class="btn btn-submit col-12" />
+            </div>
+            <div class="form-group btn-action col-12">
+            </div>
+        </form>
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+@{
+await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
+}
+
+<script src="~/js/transacts.js"></script>
+
+}

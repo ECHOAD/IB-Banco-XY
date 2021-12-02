@@ -47,10 +47,9 @@ namespace IB_Banco_XY
 
             services.AddScoped<IRepositoryWrapper, RepositoryWapper>();
 
-            services.AddScoped<ICuentaAhorroBL, CuentaAhorroBL>();
 
             ConfigureHelpers(services);
-
+            ConfigureBusineesLayer(services);
 
         }
 
@@ -78,13 +77,25 @@ namespace IB_Banco_XY
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+
             });
         }
 
+        public void ConfigureBusineesLayer(IServiceCollection services)
+        {
+            services.AddScoped<ICuentaAhorroBL, CuentaAhorroBL>();
+            services.AddScoped<ITransferenciaBL, TransferenciaBL>();
+            services.AddScoped<IEstadoCuentaBL, EstadoCuentaBL>();
+
+
+        }
 
         public void ConfigureHelpers(IServiceCollection service)
         {
