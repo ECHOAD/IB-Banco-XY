@@ -2,7 +2,7 @@
 @using System.Security.Claims;
 
 
-@model Entidades.CuentasAhorro
+@model Entidades.TarjetaCredito
 
 @{
     ViewData["Title"] = "Create";
@@ -27,30 +27,30 @@
             </div>
         </div>
         <div class="col-12 form-header">
-            <h2 class="title_formHeader">Creacion de cuenta</h2>
+            <h2 class="title_formHeader">Creacion de tarjeta de credito</h2>
         </div>
     </div>
     <div class="col-12">
         <form asp-action="Create" class="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
-            <input asp-for="Codg_Cuenta" type="hidden" value="@Model.Codg_Cuenta" />
+            <input asp-for="Id_usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
+            <input asp-for="numero_tarjetaCredito" type="hidden" value="@Model.numero_tarjetaCredito" />
 
             <div class="form-group col-sm-12 ">
-                <label asp-for="Codg_Cuenta" class="label_form">Numero de Cuenta</label>
-                <p class="form-info-detail">@Model.Codg_Cuenta</p>
+                <label asp-for="numero_tarjetaCredito" class="label_form">Numero de Tarjeta</label>
+                <p class="form-info-detail">@String.Format("{0:0000 0000 0000 0000}",double.Parse(Model.numero_tarjetaCredito))</p>
             </div>
 
             <div class="form-group col-sm-12 ">
-                <label asp-for="Balance_Actual" class="label_form">Balance de Apertura</label>
+                <label asp-for="Balance" class="label_form">Asignacion de Credito </label>
 
-                <input class="form-control inputs input-money" id="balanceActualMask" unmaskRef="#balanceActual" value="0" />
-                <input asp-for="Balance_Actual" type="hidden" id="balanceActual" />
+                <input class="form-control inputs input-money" id="balanceActualMask" unmaskRef="#CreditoActual" value="0" />
+                <input asp-for="Balance" type="hidden" id="CreditoActual" />
 
-                <span asp-validation-for="Balance_Actual" class="text-danger"></span>
+                <span asp-validation-for="Balance" class="text-danger"></span>
             </div>
             <div class="form-group btn-action col-12">
-                <input  type="submit" value="Crear Cuenta" class="btn btn-submit col-12" />
+                <input type="submit" value="Crear tarjeta de credito" class="btn btn-submit col-12" />
             </div>
         </form>
     </div>

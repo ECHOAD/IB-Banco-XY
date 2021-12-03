@@ -1,0 +1,32 @@
+﻿@inject ICuentaAhorroBL cuentaAhorroBl
+@{
+    string Id_Usuario = ViewData.ContainsKey("id_usuario") ? (string)ViewData["id_usuario"] : "";
+    string name_input = ViewData.ContainsKey("name_input") ? (string)ViewData["nameInput"] : "cuenta";
+    string id_input = ViewData.ContainsKey("name_input") ? (string)ViewData["nameInput"] : "comboCuentas";
+    string class_input = ViewData.ContainsKey("class_input") ? (string)ViewData["class_input"] : "form-control";
+    var lst_account = (await cuentaAhorroBl.FindByCondition(x => x.Id_Usuario == Id_Usuario));
+}
+
+<div class="container" id="cardsAccounts">
+    <div class="row">
+        <select class="@class_input" name="@name_input" id="@id_input">
+
+            @foreach (var account in lst_account)
+            {
+                <option value="@account.Id">
+                    <div class="col-sm-12 col-md-6 col-lg-4">
+                        <div class="card card_detail cardsAccount">
+                            <div class="card-body">
+                                <h5 class="card-title">Numero de Cuenta: @account.Codg_Cuenta</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Balance Actual @account.Balance_Actual.ToString("C",CultureInfo.CurrentCulture)</h6>
+                                <a href="cuenta/estadoCuenta/@account.Codg_Cuenta" class="card-link">Estado de Cuenta</a>
+                                <a href="/transact/@account.Codg_Cuenta" class="card-link">Transferencia</a>
+                            </div>
+                        </div>
+                    </div>
+                </option>
+            }
+        </select>
+
+    </div>
+</div>

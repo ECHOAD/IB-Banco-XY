@@ -76,7 +76,8 @@ namespace IB_Banco_XY.Controllers
             if (ModelState.IsValid)
             {
                 await _cuentaAhorroBl.Save(cuentasAhorro);
-                return LocalRedirect("/dashboard");
+
+                return Ok();
             }
             return View(cuentasAhorro);
         }
@@ -189,28 +190,37 @@ namespace IB_Banco_XY.Controllers
             return await Task.Run(() => PartialView("AccountDetails"));
         }
 
-        [HttpGet]
-        [Route("cuenta/estadoCuenta")]
-        public async Task<IActionResult> EstadoDeCuenta([FromBody] JsonDocument Solicitud)
-        {
 
+
+        [HttpGet]
+        [Route("cuenta/estadoCuenta/{no_cuenta}")]
+        public async Task<IActionResult> EstadoDeCuenta(string no_cuenta)
+        {
+            var cuenta = (await _cuentaAhorroBl.FindByCondition(x => x.Codg_Cuenta == no_cuenta)).First();
+
+            return View("View_EstadoCuenta", cuenta);
+        }
+
+        [HttpGet]
+        [Route("cuenta/estadoCuenta/partial")]
+        public async Task<IActionResult> EstadoDeCuentaDetail(int? id_cuenta, DateTime? desde, DateTime? hasta)
+        {
             try
             {
 
+                if (!id_cuenta.HasValue)
+                    return BadRequest();
 
+                if (!desde.HasValue || !hasta.HasValue)
+                {
+                    desde = DateTime.Now.AddMonths(-1);
+                    hasta = DateTime.Now;
+                }
 
-                var param = Solicitud.RootElement;
+                var EstadosCuentas = (await _estadoCuentaBl.FindByCondition(x => x.Id_cuenta == id_cuenta.Value && x.Fecha > desde.Value
+                && x.Fecha.Value < hasta)).AsEnumerable();
 
-                var id_cuenta = param.GetProperty("id_cuenta").GetInt32();
-
-                var desde = param.GetProperty("desde").GetDateTime();
-
-                var hasta = param.GetProperty("hasta").GetDateTime();
-
-
-                var EstadosCuentas = (await _estadoCuentaBl.FindByCondition(x => x.Id_cuenta == id_cuenta && x.Fecha > desde && x.Fecha < hasta)).ToList();
-
-                return Ok(EstadosCuentas);
+                return PartialView("EstadoDeCuenta", EstadosCuentas);
 
 
             }
@@ -218,20 +228,7 @@ namespace IB_Banco_XY.Controllers
             {
                 return BadRequest(new { status = -1, Message = "Hubo un fallo con la peticion " + e.Message });
 
-            }
-
-
-
-
-
-
-
-            //var estadosDeCuenta = (await _estadoCuentaBl.FindByCondition(x => x.Fecha >= param2
-            //&& x.Fecha <= param3 && x.Id == param1)).ToList();
-
-
-
-            //return await Task.Run(() => View());
+            };
         }
 
     }

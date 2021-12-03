@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Entidades.EstadoCuenta>
+
+
+<div class="col-12" style="background:rgba(31, 66, 180, 0.664); height:50px; padding-bottom:40px;">
+    <h2 class="title_formHeader p-2" style="color:white;">Estado de Cuenta</h2>
+</div>
+<table class="table_minimalist">
+    <thead>
+        <tr class="table-header">
+            <th class="header__item ">
+                Accion
+            </th>
+            <th class="header__item ">
+                Descripcion
+            </th>
+            <th class="header__item ">
+                Monto
+            </th>
+            <th class="header__item ">
+                Fecha
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr class="table-row">
+
+                    <td class="table-data">
+                    @Html.DisplayFor(modelItem => item.Accion)
+                    </td>
+                    <td class="table-data">
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td class="table-data" style="@(item.Accion.ToLower().Equals("retiro")?"color:red":"color:green")">
+                    @(item.Accion.ToLower().Equals("retiro")?"-":"+")@item.Monto.ToString("C",CultureInfo.CurrentCulture)
+                    </td>
+                    <td class="table-data">
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
