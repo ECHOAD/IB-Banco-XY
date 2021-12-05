@@ -1,0 +1,168 @@
+﻿@model CuentasAhorro
+
+@{
+    ViewData["Title"] = "Estado de Cuenta";
+}
+
+@section CSS{
+<link rel="stylesheet" href="~/css/forms.css" />
+
+<style>
+    @@media (max-width: 600px) and (min-width:200px) {
+        .materialContainer {
+            height: 60%;
+            width: 80%;
+            padding: 0;
+        }
+
+        .info-label {
+            font-size: 25px;
+        }
+
+        .info-p {
+            font-size: 15px !important;
+        }
+
+        .navbar {
+            width: 100%;
+        }
+
+        .btn-action {
+            margin-top: 30px;
+        }
+    }
+
+</style>
+
+
+}
+
+
+<section class="container materialContainer">
+    <div class="row">
+        <div class="container btn-controls">
+            <div clas="row">
+                <div>
+                    <a class="btn btn-control" href="/dashboard">
+                        <i class="bi bi-arrow-left-circle-fill icon">
+                        </i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+
+        <div class="form">
+
+            <div class="form-group col-sm-12 col-md-6 text-center ">
+                <label asp-for="Codg_Cuenta" class="label_form info-label">Numero de Cuenta</label>
+                <p class="form-info-detail info-p">@Model.Codg_Cuenta</p>
+            </div>
+
+            <div class="form-group col-sm-12 col-md-6  text-center">
+                <label asp-for="Codg_Cuenta" class="label_form info-label">Balance Disponible</label>
+                <p class="form-info-detail info-p" style="color:@(Model.Balance_Actual > 0? "green":"red")">@Model.Balance_Actual.ToString("C", CultureInfo.CurrentCulture)</p>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 ">
+                <label asp-for="Balance_Actual" class="label_form">Desde</label>
+                <input class="form-control inputs" type="date" id="desdeInput" />
+            </div>
+            <div class="form-group col-sm-12 col-md-6 ">
+                <label asp-for="Balance_Actual" class="label_form">Hasta</label>
+                <input class="form-control inputs" type="date" id="hastaInput" />
+            </div>
+            <div class="form-group btn-action col-12">
+                <input type="button" value="Solicitar estado de cuenta" id="solicitarEstado" class="btn btn-submit col-12" />
+            </div>
+        </div>
+        <form style="display:none;" id="formEstadoCuenta">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" id="id_cuenta" value="@Model.Id" />
+
+
+
+        </form>
+    </div>
+</section>
+
+
+<section class="container materialContainer">
+    <div class="row">
+        <div class="col-12" id="tableEstados">
+            <div class="col-12" style="background:rgba(31, 66, 180, 0.664); height:50px; padding-bottom:40px;">
+                <h2 class="title_formHeader p-2" style="color:white;">Estado de Cuenta</h2>
+            </div>
+            <table class="table_minimalist ">
+                <thead>
+                    <tr class="table-header">
+                        <th class="header__item ">
+                            Accion
+                        </th>
+                        <th class="header__item ">
+                            Descripcion
+                        </th>
+                        <th class="header__item ">
+                            Monto
+                        </th>
+                        <th class="header__item ">
+                            Fecha
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div class=" col-12 table_info" id="table_info_result">
+            <h3 class="title_table_info">Aqui apareceran los estados.</h3>
+            <h5 class="subTitle_table_info">Busque por rango de fecha los estados de cuentas.</h5>
+            <h6 class="subTitle_table_info">Si no coloca la fecha, este le traera los estado del mes actual</h6>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
+}
+
+<script>
+    $(document).ready(function(){
+
+        $("#solicitarEstado").click(()=>{
+
+            var id_cuenta= $('#id_cuenta').val()
+            var desde = $('#desdeInput').val()
+            var hasta = $('#hastaInput').val()
+
+            data={
+                id_cuenta,
+                desde,
+                hasta,
+            }
+
+
+            SolicitudesJqueryPartialView('/cuenta/estadoCuenta/partial',data,undefined,(res)=>{
+
+                console.log(res.toString())
+
+                $('#tableEstados').empty()
+                $('#table_info_result').empty()
+                $('#tableEstados').append(res)
+            })
+
+        })
+
+
+    });
+</script>
+}

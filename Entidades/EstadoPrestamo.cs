@@ -18,6 +18,10 @@ namespace Entidades
         [Key]
         public int Id { get; set; }
 
+        [Required]
+        public int Id_CuentaOrigen { get; set; }
+
+        [Required]
         public int Id_prestamo { get; set; }
 
         public double Monto_pagado { get; set; }
@@ -26,7 +30,10 @@ namespace Entidades
 
         public DateTime? Fecha { get; set; }
 
-        [ForeignKey("Id_prestamo")]
+        [ForeignKey("Id_CuentaOrigen")]
         public CuentasAhorro Cuenta { get; set; }
+
+        [ForeignKey("Id_prestamo")]
+        public Prestamo Prestamo { get; set; }
     }
 }

@@ -10,8 +10,10 @@
                     <div class="card-body">
                         <h5 class="card-title">Numero de Cuenta: @account.Codg_Cuenta</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Balance Actual @account.Balance_Actual.ToString("C",CultureInfo.CurrentCulture)</h6>
-                        <a href="@Url.Action("/Transacts/","Transferencias", new { account = account.Codg_Cuenta})" class="card-link">Estado de Cuenta</a>
-                        <a href="/transact/@account.Codg_Cuenta" class="card-link">Transferencia</a>
+                        <div class="acction_cards">
+                            <a href="cuenta/estadoCuenta/@account.Codg_Cuenta" class="card-link">Estados</a>
+                            <a href="/transact/@account.Codg_Cuenta" class="card-link">Transferencia</a>
+                        </div>
                     </div>
                 </div>
             </div>

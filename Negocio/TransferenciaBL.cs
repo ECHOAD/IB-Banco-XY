@@ -69,8 +69,8 @@ namespace Negocio
             await cuentaAhorroBL.Update(cuentaDestino);
 
 
-            await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Transferencia", Cuenta = CuentaOrigen, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
-            await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Deposito", Cuenta = cuentaDestino, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
+            await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Retiro", Descripcion = $"Transferencia a : No. Cuenta: {CuentaOrigen.Codg_Cuenta}", Cuenta = CuentaOrigen, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
+            await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Deposito", Descripcion = $"Transferencia de: No. Cuenta:{cuentaDestino.Codg_Cuenta}", Cuenta = cuentaDestino, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
 
 
             await repositoryWrapper.TransferenciaCuentaRepository.Create(entity);

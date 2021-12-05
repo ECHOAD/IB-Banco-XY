@@ -4,14 +4,16 @@ using Capo_Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capo_Datos.Migrations
 {
     [DbContext(typeof(InternetBanking))]
-    partial class InternetBankingModelSnapshot : ModelSnapshot
+    [Migration("20211202184852_CampoDescripcionAgregado_EstadoCuenta")]
+    partial class CampoDescripcionAgregado_EstadoCuenta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,17 +51,11 @@ namespace Capo_Datos.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CuentaOrigenId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Disponible")
                         .HasColumnType("float");
 
                     b.Property<DateTime?>("Fecha")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Id_CuentaOrigen")
-                        .HasColumnType("int");
 
                     b.Property<int>("Id_TarjetaCredito")
                         .HasColumnType("int");
@@ -68,8 +64,6 @@ namespace Capo_Datos.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CuentaOrigenId");
 
                     b.HasIndex("Id_TarjetaCredito");
 
@@ -87,7 +81,9 @@ namespace Capo_Datos.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("Fecha")
                         .HasColumnType("datetime2");
@@ -115,9 +111,6 @@ namespace Capo_Datos.Migrations
                     b.Property<DateTime?>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id_CuentaOrigen")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_prestamo")
                         .HasColumnType("int");
 
@@ -128,8 +121,6 @@ namespace Capo_Datos.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id_CuentaOrigen");
 
                     b.HasIndex("Id_prestamo");
 
@@ -178,7 +169,7 @@ namespace Capo_Datos.Migrations
                     b.Property<string>("Id_usuario")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Numero_tarjetaCredito")
+                    b.Property<string>("numero_tarjetaCredito")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -440,17 +431,11 @@ namespace Capo_Datos.Migrations
 
             modelBuilder.Entity("Entidades.EstadoCredito", b =>
                 {
-                    b.HasOne("Entidades.CuentasAhorro", "CuentaOrigen")
-                        .WithMany()
-                        .HasForeignKey("CuentaOrigenId");
-
                     b.HasOne("Entidades.TarjetaCredito", "Tarjeta")
                         .WithMany()
                         .HasForeignKey("Id_TarjetaCredito")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CuentaOrigen");
 
                     b.Navigation("Tarjeta");
                 });
@@ -470,19 +455,11 @@ namespace Capo_Datos.Migrations
                 {
                     b.HasOne("Entidades.CuentasAhorro", "Cuenta")
                         .WithMany()
-                        .HasForeignKey("Id_CuentaOrigen")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entidades.Prestamo", "Prestamo")
-                        .WithMany()
                         .HasForeignKey("Id_prestamo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cuenta");
-
-                    b.Navigation("Prestamo");
                 });
 
             modelBuilder.Entity("Entidades.Prestamo", b =>
@@ -496,11 +473,11 @@ namespace Capo_Datos.Migrations
 
             modelBuilder.Entity("Entidades.TarjetaCredito", b =>
                 {
-                    b.HasOne("Entidades.Usuarios", "Usuario")
+                    b.HasOne("Entidades.Usuarios", "usuario")
                         .WithMany()
                         .HasForeignKey("Id_usuario");
 
-                    b.Navigation("Usuario");
+                    b.Navigation("usuario");
                 });
 
             modelBuilder.Entity("Entidades.TransferenciaCuenta", b =>

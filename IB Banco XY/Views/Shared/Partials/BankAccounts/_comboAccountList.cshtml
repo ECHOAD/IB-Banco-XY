@@ -1,0 +1,34 @@
+﻿@inject ICuentaAhorroBL cuentaAhorroBl
+@{
+    string Id_Usuario = ViewData.ContainsKey("id_usuario") ? (string)ViewData["id_usuario"] : "";
+    string name_input = ViewData.ContainsKey("name_input") ? (string)ViewData["nameInput"] : "cuenta";
+    string id_input = ViewData.ContainsKey("id_input") ? (string)ViewData["id_input"] : "comboCuentas";
+    string class_input = ViewData.ContainsKey("class_input") ? (string)ViewData["class_input"] : "form-control";
+    var lst_account = (await cuentaAhorroBl.FindByCondition(x => x.Id_Usuario == Id_Usuario));
+}
+
+<div class="container" id="cardsAccounts">
+    <div class="row">
+        <select class="@class_input" name="@name_input" id="@id_input">
+
+
+            @foreach (var account in lst_account)
+            {
+                <option value="@account.Id" class="col-sm-12 combo-box inputs">
+
+                    <span class="card card_detail cardsAccount">
+                        <div class="card-body">
+                            <h5 class="card-title">@account.Codg_Cuenta || </h5>
+                            <br/>
+                            <h6 class="card-subtitle mb-2 text-muted">Balance Actual @account.Balance_Actual.ToString("C",CultureInfo.CurrentCulture)</h6>
+                  
+                        </div>
+                    </span>
+
+                </option>
+            }
+
+        </select>
+
+    </div>
+</div>

@@ -25,13 +25,7 @@ function CustomConfirm(title, content = "", icon = 'question', textbuttons) {
             resolve(result.isConfirmed)
 
         });
-
-
-
-
     })
-
-
 }
 
 function CustomError(title = "hubo un error", content = "Trate mas tarde") {
@@ -71,10 +65,60 @@ function Solicitudes(url, method, data, callback) {
         headers: {
             "Content-Type": "application/json",
         },
-        data: data,
+        data: data
     };
 
     $.ajax(settings).done(function (response) {
         callback(response);
-    });
+    }).fail(CustomError());
+}
+
+function SolicitudesJqueryPartialView(url, parametros, id_div, callback) {
+
+    $.get(
+        url, data,
+        function (data) {
+            $(id_div).empty();
+            $(id_div).load(data.toString());
+
+
+            if (callback == undefined)
+                return
+            callback(data);
+           
+        }
+    );
+}
+
+function SolicitudesJqueryPartialView(url, parametros, id_div, callback) {
+
+    $.get(
+        url, data,
+        function (data) {
+            $(id_div).empty();
+            $(id_div).load(data.toString());
+
+
+            if (callback == undefined)
+                return
+            callback(data);
+
+        }
+    );
+}
+
+
+
+function SolicitudesPartialView(url, method,parametros, id_div) {
+
+    var json = JSON.stringify(parametros);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(json);
+    let html = xhr.responseText
+
+    $(id_div).empty();
+    $(id_div).append(data);
 }

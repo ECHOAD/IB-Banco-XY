@@ -49,13 +49,27 @@ namespace Negocio
             return (await repositoryWrapper.CuentaAhorroRepository.GetAll()).ToList();
         }
 
-        public async Task Save(CuentasAhorro entity)
+        public async Task CrearCuenta(CuentasAhorro entity)
         {
-            await repositoryWrapper.CuentaAhorroRepository.Create(entity);
+            var transaction = await repositoryWrapper.BeginTransaction();
+
+            try
+            {
+                await repositoryWrapper.CuentaAhorroRepository.Create(entity);
+                await repositoryWrapper.Save();
+                await repositoryWrapper.CommitTransactionAsync();
+
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception($"No se pudo crear la cuenta de No. {entity.Codg_Cuenta}");
+            }
         }
 
         public async Task Update(CuentasAhorro entity)
         {
+
             await repositoryWrapper.CuentaAhorroRepository.Update(entity);
 
         }

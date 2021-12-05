@@ -25,6 +25,11 @@ namespace Entidades
 
         public string Accion { get; set; }
 
+
+ 
+        public string Descripcion { get; set; }
+
+        
         public double Monto { get; set; }
 
         [DefaultValue("GETDATE()")]

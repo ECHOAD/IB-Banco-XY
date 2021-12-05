@@ -93,6 +93,9 @@ namespace IB_Banco_XY
             services.AddScoped<ICuentaAhorroBL, CuentaAhorroBL>();
             services.AddScoped<ITransferenciaBL, TransferenciaBL>();
             services.AddScoped<IEstadoCuentaBL, EstadoCuentaBL>();
+            services.AddScoped<ITarjetaCreditoBL, TarjetaCreditoBL>();
+            services.AddScoped<IPrestamoBL, PrestamoBL>();
+
 
 
         }
@@ -100,6 +103,10 @@ namespace IB_Banco_XY
         public void ConfigureHelpers(IServiceCollection service)
         {
             service.AddScoped<INumberGenerator<CuentasAhorro>, AccountNumberGenerator>();
+            service.AddScoped<INumberGenerator<TarjetaCredito>, CreditCardNumberGenerator>();
+            service.AddScoped<INumberGenerator<Prestamo>, PrestamoNumberGenerator>();
+
+
         }
 
     }

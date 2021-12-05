@@ -10,7 +10,9 @@ namespace Contratos.BL_Contracts
     {
         Task<List<Prestamo>> GetAll();
 
-        Task Save(Prestamo prestamo);
+        Task CreatePrestamo(Prestamo prestamo);
+
+        Task PayPrestamo(EstadoPrestamo estadoPrestamo);
 
         Task Delete(Prestamo prestamo);
 

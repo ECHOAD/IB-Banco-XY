@@ -62,6 +62,7 @@ namespace IB_Banco_XY.Controllers
 
             cuentaAhorro = new CuentasAhorro { Id_Usuario = User.Claims.First().Value, Codg_Cuenta = _numberGenerator.Generate_a_Code() };
 
+
             return await Task.Run(() => View(cuentaAhorro));
 
         }
@@ -70,15 +71,23 @@ namespace IB_Banco_XY.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Id_Usuario,Codg_Cuenta,Balance_Actual")] CuentasAhorro cuentasAhorro)
+        public async Task<IActionResult> Create([FromBody] CuentasAhorro cuentasAhorro)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _cuentaAhorroBl.Save(cuentasAhorro);
-                return LocalRedirect("/dashboard");
+                if (ModelState.IsValid)
+                {
+                    await _cuentaAhorroBl.CrearCuenta(cuentasAhorro);
+
+                    return Ok(new { Status = 1, Message = $"Cuenta de No. {cuentasAhorro.Codg_Cuenta} creada correctamente" });
+                }
+
+                return BadRequest();
             }
-            return View(cuentasAhorro);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Status = -1, ex.Message });
+            }
         }
 
         // GET: CuentasAhorros/Edit/5
@@ -178,39 +187,57 @@ namespace IB_Banco_XY.Controllers
         [Route("Partial/AccountDetailsCard")]
         public async Task<IActionResult> AccountDetailsCard(string id_campo, string no_cuenta)
         {
-
-            if (id_campo == null && no_cuenta == null)
-                return NotFound();
-
-            ViewData["id_Campo"] = id_campo;
-            ViewData["no_cuenta"] = no_cuenta;
-
-
-            return await Task.Run(() => PartialView("AccountDetails"));
-        }
-
-        [HttpGet]
-        [Route("cuenta/estadoCuenta")]
-        public async Task<IActionResult> EstadoDeCuenta([FromBody] JsonDocument Solicitud)
-        {
-
             try
             {
 
 
+                if (id_campo == null && no_cuenta == null)
+                    return NotFound();
 
-                var param = Solicitud.RootElement;
-
-                var id_cuenta = param.GetProperty("id_cuenta").GetInt32();
-
-                var desde = param.GetProperty("desde").GetDateTime();
-
-                var hasta = param.GetProperty("hasta").GetDateTime();
+                ViewData["id_Campo"] = id_campo;
+                ViewData["no_cuenta"] = no_cuenta;
 
 
-                var EstadosCuentas = (await _estadoCuentaBl.FindByCondition(x => x.Id_cuenta == id_cuenta && x.Fecha > desde && x.Fecha < hasta)).ToList();
+                return await Task.Run(() => PartialView("AccountDetails"));
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest(new { Status = -1, Message = "No existe la cuenta" });
 
-                return Ok(EstadosCuentas);
+            }
+        }
+
+
+
+        [HttpGet]
+        [Route("cuenta/estadoCuenta/{no_cuenta}")]
+        public async Task<IActionResult> EstadoDeCuenta(string no_cuenta)
+        {
+            var cuenta = (await _cuentaAhorroBl.FindByCondition(x => x.Codg_Cuenta == no_cuenta)).First();
+
+            return View("View_EstadoCuenta", cuenta);
+        }
+
+        [HttpGet]
+        [Route("cuenta/estadoCuenta/partial")]
+        public async Task<IActionResult> EstadoDeCuentaDetail(int? id_cuenta, DateTime? desde, DateTime? hasta)
+        {
+            try
+            {
+
+                if (!id_cuenta.HasValue)
+                    return BadRequest();
+
+                if (!desde.HasValue || !hasta.HasValue)
+                {
+                    desde = DateTime.Now.AddMonths(-1);
+                    hasta = DateTime.Now;
+                }
+
+                var EstadosCuentas = (await _estadoCuentaBl.FindByCondition(x => x.Id_cuenta == id_cuenta.Value && x.Fecha > desde.Value
+                && x.Fecha.Value < hasta)).AsEnumerable();
+
+                return PartialView("EstadoDeCuenta", EstadosCuentas);
 
 
             }
@@ -218,20 +245,7 @@ namespace IB_Banco_XY.Controllers
             {
                 return BadRequest(new { status = -1, Message = "Hubo un fallo con la peticion " + e.Message });
 
-            }
-
-
-
-
-
-
-
-            //var estadosDeCuenta = (await _estadoCuentaBl.FindByCondition(x => x.Fecha >= param2
-            //&& x.Fecha <= param3 && x.Id == param1)).ToList();
-
-
-
-            //return await Task.Run(() => View());
+            };
         }
 
     }

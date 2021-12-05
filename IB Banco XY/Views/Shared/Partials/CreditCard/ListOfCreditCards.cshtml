@@ -1,0 +1,26 @@
+﻿@model List<TarjetaCredito>
+
+<div class="container" id="cardsAccounts">
+    <div class="row">
+
+        @foreach (var creditcard in Model)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card card_detail cardsAccount">
+                    <div class="card-body">
+                        <h5 class="card-title">Numero de Tarjeta</h5>
+                        <h5 class="card-title">@String.Format("{0:0000 0000 0000 0000}",double.Parse(creditcard.Numero_tarjetaCredito))</h5>
+
+                        <h6 class="card-subtitle mb-2 text-muted">Credito asignado: @creditcard.Balance.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Credito disponible: @creditcard.Balance_disponible.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <div class="acction_cards">
+                            <a href="cuenta/estadoCuenta/@creditcard.Id" class="card-link">Estados</a>
+                            <a href="/paycreditcard/@creditcard.Id" class="card-link">Pago de Tarjeta</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

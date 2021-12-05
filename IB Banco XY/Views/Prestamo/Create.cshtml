@@ -2,10 +2,10 @@
 @using System.Security.Claims;
 
 
-@model Entidades.CuentasAhorro
+@model Entidades.Prestamo
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Prestamos";
 }
 
 @section CSS{
@@ -27,30 +27,30 @@
             </div>
         </div>
         <div class="col-12 form-header">
-            <h2 class="title_formHeader">Creacion de cuenta</h2>
+            <h2 class="title_formHeader">Creacion de Prestamo</h2>
         </div>
     </div>
     <div class="col-12">
-        <form asp-action="Create" class="form">
+        <form class="form" id="FormTarjetaCredito">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" id="Id_Usuario" />
-            <input asp-for="Codg_Cuenta" type="hidden" value="@Model.Codg_Cuenta" id="Codg_Cuenta" />
+            <input asp-for="Id_Usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" id="Id_usuario" />
+            <input asp-for="Codigo_Prestamo" type="hidden" value="@Model.Codigo_Prestamo" id="Codigo_Prestamo" />
 
             <div class="form-group col-sm-12 ">
-                <label asp-for="Codg_Cuenta" class="label_form">Numero de Cuenta</label>
-                <p class="form-info-detail">@Model.Codg_Cuenta</p>
+                <label asp-for="Codigo_Prestamo" class="label_form">Numero de Tarjeta</label>
+                <p class="form-info-detail">@String.Format("{0:000000-00}",double.Parse(Model.Codigo_Prestamo))</p>
             </div>
 
             <div class="form-group col-sm-12 ">
-                <label asp-for="Balance_Actual" class="label_form">Balance de Apertura</label>
+                <label asp-for="Balance_Apertura" class="label_form">Monto del prestamo </label>
 
-                <input class="form-control inputs input-money" id="balanceActualMask" unmaskRef="#balanceActual" value="0" />
-                <input asp-for="Balance_Actual" type="hidden" id="balanceActual" />
+                <input class="form-control inputs input-money" id="balanceActualMask" unmaskRef="#Balance_Apertura" value="0" />
+                <input asp-for="Balance_Apertura" type="hidden" id="Balance_Apertura" />
 
-                <span asp-validation-for="Balance_Actual" class="text-danger"></span>
+                <span asp-validation-for="Balance_Apertura" class="text-danger"></span>
             </div>
             <div class="form-group btn-action col-12">
-                <input type="button" value="Crear Cuenta" class="btn btn-submit col-12" id="crearCuenta" />
+                <input type="button" value="Crear Prestamo" class="btn btn-submit col-12" id="crearTarjeta" />
             </div>
         </form>
     </div>
@@ -68,9 +68,10 @@
 }
 
 <script>
-    let Id_usuario=$("#Id_Usuario").val()
+    let Id_usuario=$("#Id_usuario").val()
 
-    let Numero_CuentaAhorro= $("#Codg_Cuenta").val()
+    let Codigo_Prestamo= $("#Codigo_Prestamo").val()
+
 
     $(document).ready(function(){
 
@@ -85,9 +86,9 @@
 
     });
 
-     $('#crearCuenta').click(()=>{
+    $('#crearTarjeta').click(()=>{
 
-    let Balance=$('#balanceActual').val()
+    let Balance=$('#Balance_Apertura').val()
 
         if(parseInt(Balance) == 0){
 
@@ -98,14 +99,14 @@
 
         let creditCard = {
            "Id_usuario":Id_usuario,
-           "Codg_Cuenta":Numero_CuentaAhorro ,
-           "Balance_Actual":Balance
+           "Codigo_Prestamo":Codigo_Prestamo ,
+           "Balance_Apertura":Balance
         };
 
         let data =JSON.stringify(creditCard)
 
 
-        Solicitudes('/CuentasAhorros/Create','POST',data, async (res)=> {
+        Solicitudes('/prestamo/create','POST',data, async (res)=> {
 
             CustomSucess(undefined,res.message)
             var time = setTimeout(() => {
@@ -115,8 +116,6 @@
 
         })
     })
-
-
 
 
     $('.input-money').mask('#####$',{reverse:true});

@@ -1,0 +1,42 @@
+﻿@using Contratos;
+@inject IPrestamoBL prestamoBL
+@{
+    int id_prestamo = ViewData.ContainsKey("id_prestamo") ? (int)ViewData["id_prestamo"] : 0;
+
+    string input_id = ViewData.ContainsKey("input_id") ? (string)ViewData["input_id"] : null;
+
+
+
+
+
+    Prestamo prestamo = await prestamoBL.FindById(id_prestamo);
+
+    double CreditoStatus = prestamo.Balance_Apertura - prestamo.Total_Pagado;
+
+
+
+}
+
+<style>
+    .cardsCreditCardDetail {
+        border: none;
+        border-radius: 15px;
+        box-shadow: -2px 0px 12px 5px rgba(0, 0, 0, 0.002);
+    }
+
+</style>
+
+@if (input_id != null)
+{
+    <input id="@input_id" value="@prestamo.Id" type="hidden" />
+}
+
+
+<div class="card card_detail cardsCreditCardDetail">
+    <div class="card-body">
+        <h5 class="card-title">Prestamo</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Numero de cuenta: <strong>@String.Format("{0:000000-00}",double.Parse(prestamo.Codigo_Prestamo))</strong></h6>
+        <h6 class="card-subtitle mb-2 text-muted">Monto de Apertura: @prestamo.Balance_Apertura.ToString("C", CultureInfo.CurrentCulture)</h6>
+        <h6 class="card-subtitle mb-2 text-muted" style="color:@(prestamo.Total_Pagado > 0? "color:green;":"color:red;") " ">Monto Total Pagado: @prestamo.Total_Pagado.ToString("C", CultureInfo.CurrentCulture)</h6>
+    </div>
+</div>

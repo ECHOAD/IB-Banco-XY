@@ -1,0 +1,120 @@
+﻿@inject ICuentaAhorroBL cuentaAhorrro;
+@inject ITarjetaCreditoBL tarjetaCredito;
+
+
+@{
+    ViewData["Title"] = "Transacciones";
+
+
+
+    var user_id = User.Claims.First().Value;
+
+    var id_creditCard = ViewData.ContainsKey("id_creditCard") ? (int)ViewData["id_creditCard"] : 0;
+
+    var cuentasDisponibles = (await cuentaAhorrro.FindByCondition(x => x.Id_Usuario == user_id)).ToList();
+
+
+
+}
+
+@section CSS{
+<link rel="stylesheet" href="~/css/forms.css" />
+
+
+
+<style>
+    .sectionControl {
+        padding: 30px;
+    }
+
+
+    @@media (max-width: 600px) and (min-width:200px) {
+        .materialContainer {
+            height: 600px;
+            width: calc(var(--vh, 1vh) * 40);
+            padding: 0;
+        }
+
+        .navbar {
+        }
+
+        .btn-action {
+            margin-top: 150px;
+        }
+    }
+
+</style>
+
+}
+
+
+
+<section class="container materialContainer">
+    <div class="row">
+        <div class="container btn-controls">
+            <div clas="row">
+                <div>
+                    <a class="btn btn-control" href="/dashboard">
+                        <i class="bi bi-arrow-left-circle-fill icon">
+                        </i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 form-header">
+            <h2 class="title_formHeader">Pago de Tarjeta Credito</h2>
+        </div>
+    </div>
+    <div class="col-12">
+        <form  class="form" id="formTransact">
+
+
+
+            <div class="col-sm-12 mb-3" id="cuenta_destino">
+                <h6>No. Cuenta</h6>
+                @await Html.PartialAsync("Partials/BankAccounts/_comboAccountList",null, new ViewDataDictionary (ViewData)
+                {{"Id_Usuario",user_id},
+                {"name_input","cuenta_origen"},
+                {"id_input","cuenta_origen"},
+                {"class_input","combo-box inputs"}
+                })
+            </div>
+
+
+            <div class="col-sm-12 " id="tarjeta_a_pagar">
+                <h6>Tarjeta a Pagar</h6>
+                @await Html.PartialAsync("Partials/CreditCard/CreditCardDetails",null, new ViewDataDictionary (ViewData)
+                {{"input_id","id_creditCard"},
+                {"id_balance","creditCard_balance"},
+                {"id_balanceAvailable","creditCard_balanceAvailable"}
+                })
+            </div>
+
+
+
+
+            <div class="form-group col-sm-12 mt-4" id="sectionControl">
+                <input class="form-control inputs input-money" placeholder="$ Monto a pagar" style="border-radius:4px;" id="MontoMask" unmaskRef="#monto" value="" required />
+                <input type="hidden" id="monto" value="" />
+
+                <input type="button" value="Pagar Credito" id="button-pay" onclick="PostTransaccion()" class="btn btn-submit col-12" />
+            </div>
+            <div class="form-group btn-action col-12">
+            </div>
+        </form>
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+
+<script src="~/js/creditPay.js"></script>
+
+@{
+await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+
+}
