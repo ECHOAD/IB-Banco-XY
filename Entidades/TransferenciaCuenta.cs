@@ -15,6 +15,7 @@ namespace Entidades
 
         public int Id_CuentaOrigen { get; set; }
 
+
         public int Id_CuentaDestino { get; set; }
 
         public double MontoActual { get; set; }

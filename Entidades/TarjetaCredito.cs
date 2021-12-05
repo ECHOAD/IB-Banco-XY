@@ -13,16 +13,21 @@ namespace Entidades
         [Key]
         public int Id { get; set; }
 
-        public string numero_tarjetaCredito { get; set; }
+
+
+        public string Numero_tarjetaCredito { get; set; }
+
 
         public string Id_usuario { get; set; }
 
+
         public double Balance { get; set; }
+
 
         public double Balance_disponible { get; set; }
 
         [ForeignKey("Id_usuario")]
-        public Usuarios usuario { get; set; }
+        public Usuarios Usuario { get; set; }
 
     }
 }

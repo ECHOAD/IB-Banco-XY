@@ -10,7 +10,7 @@
 
 
 
-    CuentasAhorro cuenta_origen = (await cuenta_ahorroBL.FindByCondition(x => x.Codg_Cuenta == acount_number)).First();
+    CuentasAhorro cuenta_origen = (await cuenta_ahorroBL.FindByCondition(x => x.Codg_Cuenta == acount_number)).FirstOrDefault();
 
 }
 

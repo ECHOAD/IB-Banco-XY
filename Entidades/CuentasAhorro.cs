@@ -18,8 +18,8 @@ namespace Entidades
 
         public string Id_Usuario { get; set; }
 
-        public string Codg_Cuenta {  get; set; }
-        
+        public string Codg_Cuenta { get; set; }
+
         public double Balance_Actual { get; set; }
 
 

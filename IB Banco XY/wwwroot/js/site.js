@@ -65,12 +65,12 @@ function Solicitudes(url, method, data, callback) {
         headers: {
             "Content-Type": "application/json",
         },
-        data: data,
+        data: data
     };
 
     $.ajax(settings).done(function (response) {
         callback(response);
-    });
+    }).fail(CustomError());
 }
 
 function SolicitudesJqueryPartialView(url, parametros, id_div, callback) {
@@ -89,6 +89,24 @@ function SolicitudesJqueryPartialView(url, parametros, id_div, callback) {
         }
     );
 }
+
+function SolicitudesJqueryPartialView(url, parametros, id_div, callback) {
+
+    $.get(
+        url, data,
+        function (data) {
+            $(id_div).empty();
+            $(id_div).load(data.toString());
+
+
+            if (callback == undefined)
+                return
+            callback(data);
+
+        }
+    );
+}
+
 
 
 function SolicitudesPartialView(url, method,parametros, id_div) {

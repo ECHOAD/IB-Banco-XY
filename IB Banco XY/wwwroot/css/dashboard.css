@@ -16,6 +16,7 @@ p {
 
 .btn-acd {
     font-size: 30px;
+    
 }
 
 .btn-acd:focus,
@@ -31,27 +32,39 @@ p {
 #accordionInfo {
     box-shadow: -2px 0px 12px 5px rgba(0, 0, 0, 0.219);
     border-radius: 10px;
+   
 }
+
+.collapse{
+    padding: 2px;
+}
+
+
+
 
 #accordionInfo .infocard {
     background: rgba(222, 222, 223, 0.157);
+    
 }
 
 #accordionInfo .card .card-header {
     background: none;
     border: none;
+    
 }
+
 
 .card_detail {
     background: rgba(228, 219, 219, 0.52);
     border-radius: 10px;
-    margin: 5px;
+    
     box-shadow: 3px 3px rgba(40, 40, 41, 0.178);
 }
 
 .cardsAccount {
     border: none;
-    margin-top: 12px;
+    padding: 10px;
+    margin:8px;
 }
 
 .btn:hover {
@@ -60,16 +73,19 @@ p {
 }
 
 .btnAcciones {
+    text-align: center;
+    width: 100%;  
     margin-top: 30px;
 }
 
-.btn-agregar {
+.btn-agregar {   
+   
     color: #fff;
     font-weight: bold;
     font-size: 15px;
     background-color: rgba(20, 69, 202, 0.705);
     box-shadow: 1px 2px rgba(115, 119, 128, 0.472);
-    height: 60%;
+    height: 30%;
 }
 
 .cardTitle {
@@ -80,4 +96,20 @@ p {
 .cardButton.focus {
     border: none;
     border-color: none;
+}
+
+@media (max-width: 568px) and (min-width:200px) {
+    h2 {
+        font: size 15px;
+        position: relative;
+    }
+    .btn-action {
+        margin-top: 150px;
+    }
+}
+
+@media (min-width:800px) {
+    .title_formHeader {
+        font-size: 30px;
+    }
 }

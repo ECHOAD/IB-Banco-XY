@@ -31,14 +31,14 @@
         </div>
     </div>
     <div class="col-12">
-        <form asp-action="Create" class="form">
+        <form class="form" id="FormTarjetaCredito">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="Id_usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
-            <input asp-for="numero_tarjetaCredito" type="hidden" value="@Model.numero_tarjetaCredito" />
+            <input asp-for="Id_usuario" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" id="Id_usuario" />
+            <input asp-for="Numero_tarjetaCredito" type="hidden" value="@Model.Numero_tarjetaCredito" id="Numero_tarjetaCredito" />
 
             <div class="form-group col-sm-12 ">
-                <label asp-for="numero_tarjetaCredito" class="label_form">Numero de Tarjeta</label>
-                <p class="form-info-detail">@String.Format("{0:0000 0000 0000 0000}",double.Parse(Model.numero_tarjetaCredito))</p>
+                <label asp-for="Numero_tarjetaCredito" class="label_form">Numero de Tarjeta</label>
+                <p class="form-info-detail">@String.Format("{0:0000 0000 0000 0000}",double.Parse(Model.Numero_tarjetaCredito))</p>
             </div>
 
             <div class="form-group col-sm-12 ">
@@ -50,7 +50,7 @@
                 <span asp-validation-for="Balance" class="text-danger"></span>
             </div>
             <div class="form-group btn-action col-12">
-                <input type="submit" value="Crear tarjeta de credito" class="btn btn-submit col-12" />
+                <input type="button" value="Crear tarjeta de credito" class="btn btn-submit col-12" id="crearTarjeta" />
             </div>
         </form>
     </div>
@@ -68,6 +68,11 @@
 }
 
 <script>
+    let Id_usuario=$("#Id_usuario").val()
+
+    let Numero_tarjetaCredito= $("#Numero_tarjetaCredito").val()
+
+
     $(document).ready(function(){
 
     $('.input-money').change((evt)=>{
@@ -80,6 +85,37 @@
       $(idNewTarget).val($("#"+evt.target.id).cleanVal())
 
     });
+
+    $('#crearTarjeta').click(()=>{
+
+    let Balance=$('#CreditoActual').val()
+
+        if(parseInt(Balance) == 0){
+
+            CustomError("Error","El credito de apertura no puede estar en cero")
+            return
+        }
+
+
+        let creditCard = {
+           "Id_usuario":Id_usuario,
+           "Numero_tarjetaCredito":Numero_tarjetaCredito ,
+           "Balance":Balance
+        };
+
+        let data =JSON.stringify(creditCard)
+
+
+        Solicitudes('/tarjetaCredito/create','POST',data, async (res)=> {
+
+            CustomSucess(undefined,res.message)
+            var time = setTimeout(() => {
+          location.href = "/dashboard";
+        }, 1500);
+
+
+        })
+    })
 
 
     $('.input-money').mask('#####$',{reverse:true});

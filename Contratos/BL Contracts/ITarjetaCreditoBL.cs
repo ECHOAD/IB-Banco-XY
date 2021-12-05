@@ -10,7 +10,10 @@ namespace Contratos.BL_Contracts
     {
         Task<List<TarjetaCredito>> GetAll();
 
-        Task Save(TarjetaCredito TarjetaCredito);
+        Task CreateCreditCard(TarjetaCredito TarjetaCredito);
+
+        Task PayCreditCard(EstadoCredito EstadoCredito);
+
 
         Task Delete(TarjetaCredito TarjetaCredito);
 

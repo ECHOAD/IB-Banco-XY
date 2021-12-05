@@ -1,0 +1,26 @@
+﻿@model List<Prestamo>
+
+<div class="container" id="cardsAccounts">
+    <div class="row">
+
+        @foreach (var prestamo in Model)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card card_detail cardsAccount">
+                    <div class="card-body">
+                        <h5 class="card-title">Numero de Tarjeta</h5>
+                        <h5 class="card-title">@String.Format("{0:000000-00}",double.Parse(prestamo.Codigo_Prestamo))</h5>
+
+                        <h6 class="card-subtitle mb-2 text-muted">Monto Solicitado: @prestamo.Balance_Apertura.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Total Pagado: @prestamo.Total_Pagado.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <div class="acction_cards">
+                            <a href="/transact/@prestamo.Id" class="card-link">Historial de Pago</a>
+                            <a href="/payprestamo/@prestamo.Id" class="card-link">Realizar Pago</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

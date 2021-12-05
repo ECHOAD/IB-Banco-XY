@@ -6,7 +6,7 @@
     string input_value = ViewData.ContainsKey("id_campo") ? (string)ViewData["id_campo"] : "";
 
 
-    CuentasAhorro cuenta_origen = (await cuenta_ahorroBL.FindByCondition(x => x.Codg_Cuenta == acount_number)).First();
+    CuentasAhorro cuenta_origen = (await cuenta_ahorroBL.FindByCondition(x => x.Codg_Cuenta == acount_number)).FirstOrDefault();
 
 }
 

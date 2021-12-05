@@ -3,9 +3,14 @@
 
 @{
     ViewData["Title"] = "Transacciones";
-
-    string origin_acount_number = ViewData.ContainsKey("account") ? (string)ViewData["account"] : "";
-    int idCuentaOrigen = (await cuentaAhorrro.FindByCondition(x => x.Codg_Cuenta == origin_acount_number)).Select(x => x.Id).First();
+    string origin_acount_number = "";
+    int idCuentaOrigen = 0;
+    if (ViewData.ContainsKey("account"))
+    {
+        origin_acount_number = (string)ViewData["account"];
+        idCuentaOrigen = (await cuentaAhorrro.FindByCondition(x => x.Codg_Cuenta == origin_acount_number)).Select(x => x.Id).FirstOrDefault();
+    }
+  
 }
 
 @section CSS{
@@ -41,7 +46,7 @@
 
 
 
-<section class="container materialContainer" >
+<section class="container materialContainer">
     <div class="row">
         <div class="container btn-controls">
             <div clas="row">

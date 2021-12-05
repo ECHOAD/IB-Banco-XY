@@ -8,16 +8,18 @@
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card card_detail cardsAccount">
                     <div class="card-body">
-                        <h5 class="card-title">Numero de Tarjeta: @creditcard.numero_tarjetaCredito</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Credito asignado: @creditcard.Balance.ToString("C",CultureInfo.CurrentCulture)</h6>
-                        <h6 class="card-subtitle mb-2 text-muted">Credito asignado: @creditcard.Balance_disponible.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <h5 class="card-title">Numero de Tarjeta</h5>
+                        <h5 class="card-title">@String.Format("{0:0000 0000 0000 0000}",double.Parse(creditcard.Numero_tarjetaCredito))</h5>
 
-                        <a href="cuenta/estadoCuenta/@creditcard.Id" class="card-link">Estado de tarjeta credito</a>
-                        <a href="/transact/@creditcard.Id" class="card-link">Transferencia</a>
+                        <h6 class="card-subtitle mb-2 text-muted">Credito asignado: @creditcard.Balance.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Credito disponible: @creditcard.Balance_disponible.ToString("C",CultureInfo.CurrentCulture)</h6>
+                        <div class="acction_cards">
+                            <a href="cuenta/estadoCuenta/@creditcard.Id" class="card-link">Estados</a>
+                            <a href="/paycreditcard/@creditcard.Id" class="card-link">Pago de Tarjeta</a>
+                        </div>
                     </div>
                 </div>
             </div>
-
         }
 
     </div>

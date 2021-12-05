@@ -19,7 +19,11 @@ namespace Entidades
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public int Id_TarjetaCredito { get; set; }
+
+        [Required]
+        public int Id_CuentaOrigen { get; set; }
 
         public double Pagado { get; set; }
 
@@ -29,5 +33,7 @@ namespace Entidades
 
         [ForeignKey("Id_TarjetaCredito")]
         public TarjetaCredito Tarjeta { get; set; }
+
+        public CuentasAhorro CuentaOrigen { get; set; }
     }
 }

@@ -151,7 +151,21 @@ th{
 color:rgb(160, 155, 155);
 }
 
-.
+.combo-box {
+    width:100%;
+    height:50px;
+    border-radius: 5px;
+    border:none;
+    word-wrap:initial;
+
+}
+
+.detail-optionalInfo{
+    background:rgba(255, 0, 0, 0.685);
+    border-bottom-left-radius:14px ;
+    border-bottom-right-radius:14px ;
+
+}
 
 @media (max-width: 600px) and (min-width:200px) {
     .materialContainer {

@@ -4,14 +4,16 @@ using Capo_Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capo_Datos.Migrations
 {
     [DbContext(typeof(InternetBanking))]
-    partial class InternetBankingModelSnapshot : ModelSnapshot
+    [Migration("20211204205221_AgregandoNuevosCampos")]
+    partial class AgregandoNuevosCampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,9 +117,6 @@ namespace Capo_Datos.Migrations
                     b.Property<DateTime?>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id_CuentaOrigen")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_prestamo")
                         .HasColumnType("int");
 
@@ -128,8 +127,6 @@ namespace Capo_Datos.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id_CuentaOrigen");
 
                     b.HasIndex("Id_prestamo");
 
@@ -470,19 +467,11 @@ namespace Capo_Datos.Migrations
                 {
                     b.HasOne("Entidades.CuentasAhorro", "Cuenta")
                         .WithMany()
-                        .HasForeignKey("Id_CuentaOrigen")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entidades.Prestamo", "Prestamo")
-                        .WithMany()
                         .HasForeignKey("Id_prestamo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cuenta");
-
-                    b.Navigation("Prestamo");
                 });
 
             modelBuilder.Entity("Entidades.Prestamo", b =>

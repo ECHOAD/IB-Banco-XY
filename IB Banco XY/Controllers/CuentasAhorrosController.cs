@@ -62,6 +62,7 @@ namespace IB_Banco_XY.Controllers
 
             cuentaAhorro = new CuentasAhorro { Id_Usuario = User.Claims.First().Value, Codg_Cuenta = _numberGenerator.Generate_a_Code() };
 
+
             return await Task.Run(() => View(cuentaAhorro));
 
         }
@@ -70,16 +71,23 @@ namespace IB_Banco_XY.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Id_Usuario,Codg_Cuenta,Balance_Actual")] CuentasAhorro cuentasAhorro)
+        public async Task<IActionResult> Create([FromBody] CuentasAhorro cuentasAhorro)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _cuentaAhorroBl.Save(cuentasAhorro);
+                if (ModelState.IsValid)
+                {
+                    await _cuentaAhorroBl.CrearCuenta(cuentasAhorro);
 
-                return Ok();
+                    return Ok(new { Status = 1, Message = $"Cuenta de No. {cuentasAhorro.Codg_Cuenta} creada correctamente" });
+                }
+
+                return BadRequest();
             }
-            return View(cuentasAhorro);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Status = -1, ex.Message });
+            }
         }
 
         // GET: CuentasAhorros/Edit/5
@@ -179,15 +187,24 @@ namespace IB_Banco_XY.Controllers
         [Route("Partial/AccountDetailsCard")]
         public async Task<IActionResult> AccountDetailsCard(string id_campo, string no_cuenta)
         {
-
-            if (id_campo == null && no_cuenta == null)
-                return NotFound();
-
-            ViewData["id_Campo"] = id_campo;
-            ViewData["no_cuenta"] = no_cuenta;
+            try
+            {
 
 
-            return await Task.Run(() => PartialView("AccountDetails"));
+                if (id_campo == null && no_cuenta == null)
+                    return NotFound();
+
+                ViewData["id_Campo"] = id_campo;
+                ViewData["no_cuenta"] = no_cuenta;
+
+
+                return await Task.Run(() => PartialView("AccountDetails"));
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest(new { Status = -1, Message = "No existe la cuenta" });
+
+            }
         }
 
 

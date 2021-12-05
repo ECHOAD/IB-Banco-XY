@@ -94,6 +94,8 @@ namespace IB_Banco_XY
             services.AddScoped<ITransferenciaBL, TransferenciaBL>();
             services.AddScoped<IEstadoCuentaBL, EstadoCuentaBL>();
             services.AddScoped<ITarjetaCreditoBL, TarjetaCreditoBL>();
+            services.AddScoped<IPrestamoBL, PrestamoBL>();
+
 
 
         }
