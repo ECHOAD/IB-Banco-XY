@@ -7,7 +7,7 @@
 @{
     ViewData["Title"] = "DashBoard";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
+
 
     var accounts_User = (await cuentaAhorroBL.GetAll()).
     Where(x => x.Id_Usuario == User.Claims.First().Value).ToList();
@@ -19,6 +19,8 @@
 
     var active = accounts_User.Sum(x => x.Balance_Actual);
     var credito = credits_card_User.Sum(x => x.Balance_disponible);
+    var prestamos = prestamos_user.Sum(x => x.Balance_Apertura-x.Total_Pagado);
+
 }
 
 @section CSS{
@@ -46,9 +48,9 @@
             </div>
             <div id="collapseSummary" class="collapse show" aria-labelledby="headingSummary" data-parent="#accordionInfo">
                 <div class="card-body" id="summary">
-                    <h5 class="bg-success text-white" style="border-radius:8px; padding:10px;">Activos @active.ToString("C",CultureInfo.CurrentCulture)  </h5>
-                    <h5 class="bg-secondary text-white" style="border-radius:8px; padding:10px;">Credito @credito.ToString("C",CultureInfo.CurrentCulture)  </h5>
-                    <h5 class="bg-warning text-white" style="border-radius:8px; padding:10px;">Prestamos @credito.ToString("C",CultureInfo.CurrentCulture)  </h5>
+                    <h5 class="bg-success text-white" style="border-radius:8px; padding:10px;">Activos Disponible @active.ToString("C",CultureInfo.CurrentCulture)  </h5>
+                    <h5 class="bg-secondary text-white" style="border-radius:8px; padding:10px;">Credito Disponible @credito.ToString("C",CultureInfo.CurrentCulture)  </h5>
+                    <h5 class="bg-warning text-white" style="border-radius:8px; padding:10px;">Prestamos por Pagar @prestamos.ToString("C",CultureInfo.CurrentCulture)  </h5>
 
                 </div>
             </div>
@@ -152,9 +154,9 @@
                 {
 
                     @await Html.PartialAsync("Partials/Prestamos/ListOfPrestamos"
-                    ,prestamos_user)
+                ,prestamos_user)
                 }
-                  @if (prestamos_user.Count != 0)
+                @if (prestamos_user.Count != 0)
                 {
 
 

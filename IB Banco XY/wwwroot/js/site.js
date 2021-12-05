@@ -70,7 +70,7 @@ function Solicitudes(url, method, data, callback) {
 
     $.ajax(settings).done(function (response) {
         callback(response);
-    }).fail(CustomError());
+    });
 }
 
 function SolicitudesJqueryPartialView(url, parametros, id_div, callback) {

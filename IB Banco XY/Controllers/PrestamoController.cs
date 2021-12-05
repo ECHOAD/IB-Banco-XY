@@ -2,6 +2,7 @@
 using Contratos.Helpers;
 using Entidades;
 using Microsoft.AspNetCore.Mvc;
+using Negocio.Exceptions;
 using System;
 using System.Threading.Tasks;
 
@@ -48,9 +49,7 @@ namespace IB_Banco_XY.Controllers
             }
             catch (Exception)
             {
-
                 return BadRequest(new { status = -1, message = $"Tarjeta de credito de  No [{prestamo.Codigo_Prestamo}] no puedo ser creada exitosamente" });
-
 
             }
         }
@@ -67,17 +66,14 @@ namespace IB_Banco_XY.Controllers
 
 
         [HttpPost]
-        [Route("/prestamo/paycredit")]
-        public async Task<IActionResult> PayCreditCardOwms([FromBody] EstadoPrestamo pagoPrestamo)
+        [Route("/prestamo/payprestamo")]
+        public async Task<IActionResult> PayPrestamosOwms([FromBody] EstadoPrestamo pagoPrestamo)
         {
-
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
-                    await _prestamoBL.PayCreditCard(pagoCredito);
+                    await _prestamoBL.PayPrestamo(pagoPrestamo);
 
                     return Ok(new { Status = 1, Message = "Pago realizado correctamente" });
                 }
@@ -95,11 +91,8 @@ namespace IB_Banco_XY.Controllers
             }
             catch (Exception ex)
             {
-
-                return BadRequest(new { status = -1, ex.Message });
-
+                return Ok(new { status = -1, ex.Message });
             }
-
 
         }
     }

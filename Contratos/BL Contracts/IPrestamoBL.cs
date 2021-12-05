@@ -14,6 +14,7 @@ namespace Contratos.BL_Contracts
 
         Task PayPrestamo(EstadoPrestamo estadoPrestamo);
 
+
         Task Delete(Prestamo prestamo);
 
         Task<Prestamo> FindById(int id);
