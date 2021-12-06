@@ -14,6 +14,8 @@ namespace Contratos.BL_Contracts
 
         Task RealizeTransaction(TransferenciaCuenta cuentaAhorro);
 
+        Task RealizeCreditTransaction(TransferenciaCredito entity);
+
         Task Delete(TransferenciaCuenta entity);
 
         Task<TransferenciaCuenta> FindByID(int id);

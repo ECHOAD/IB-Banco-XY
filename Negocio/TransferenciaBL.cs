@@ -54,6 +54,66 @@ namespace Negocio
             return (await repositoryWrapper.TransferenciaCuentaRepository.GetAll()).ToList();
         }
 
+
+
+        public async Task RealizeCreditTransaction(TransferenciaCredito entity)
+        {
+
+            var transaction = await repositoryWrapper.BeginTransaction();
+
+            try
+            {
+
+                if (entity.MontoActual <= 0)
+                    throw new UnnexpectedValueException("El monto ingresado no puede ser menor o igual cero");
+
+
+                entity.FechaRealizada = DateTime.Now;
+
+
+
+                var CreditoOrigen = await repositoryWrapper.TarjetaCreditoRepository.FindById(entity.Id_CreditoOrigen);
+                var cuentaDestino = await repositoryWrapper.CuentaAhorroRepository.FindById(entity.Id_CuentaDestino);
+
+                if (CreditoOrigen.Balance_disponible <= 0 || CreditoOrigen.Balance_disponible - entity.MontoActual < 0)
+                    throw new NoSufficientAmountException($"La cuenta no tiene suficiente balance para hacer la transferencia");
+
+                CreditoOrigen.Balance_disponible -= entity.MontoActual;
+                cuentaDestino.Balance_Actual += entity.MontoActual;
+
+                await repositoryWrapper.TarjetaCreditoRepository.Update(CreditoOrigen);
+                await cuentaAhorroBL.Update(cuentaDestino);
+
+
+                await repositoryWrapper.EstadoCreditoRepository.Create(new EstadoCredito
+                {
+                    CuentaOrigen = cuentaDestino,
+                    Pagado = -entity.MontoActual,
+                    Tarjeta = CreditoOrigen,
+                    Disponible = CreditoOrigen.Balance_disponible
+                });
+                await estadoCuentaBL.Save(new EstadoCuenta
+                {
+                    Accion = "Deposito",
+                    Descripcion = $"Transferencia de: No. Tarjeta: xxxxxxxxxxx{CreditoOrigen.Numero_tarjetaCredito[^4..]}",
+                    Cuenta = cuentaDestino,
+                    Monto = entity.MontoActual,
+                    Fecha = entity.FechaRealizada
+                });
+
+
+                await repositoryWrapper.TransferenciaCreditoRepository.Create(entity);
+
+                await repositoryWrapper.Save();
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception("No se pudo realizar la transaccion");
+            }
+        }
+
         public async Task RealizeTransaction(TransferenciaCuenta entity)
         {
             var transaction = await repositoryWrapper.BeginTransaction();

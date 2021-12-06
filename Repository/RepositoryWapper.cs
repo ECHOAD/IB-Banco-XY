@@ -26,6 +26,7 @@ namespace Repository
         private ICuentaAhorroRepository _cuentaRepository;
         private IPrestamoRepository _prestamoRepository;
         private ITransferenciaCuentaRepository _transferenciaCuentaRepository;
+        private ITransferenciaCreditoRepository _transferenciaCreditoRepository;
 
         public ITarjetaCreditoRepository TarjetaCreditoRepository
         {
@@ -113,6 +114,19 @@ namespace Repository
                     _transferenciaCuentaRepository = new TransferenciaCuentaRepository(_internetBankingContext);
                 }
                 return _transferenciaCuentaRepository;
+            }
+        }
+
+        public ITransferenciaCreditoRepository TransferenciaCreditoRepository
+        {
+            get
+            {
+                if (_transferenciaCreditoRepository == null)
+                {
+                    return _transferenciaCreditoRepository = new TransferenciaCreditoRepository(_internetBankingContext);
+                }
+
+                return _transferenciaCreditoRepository;
             }
         }
 

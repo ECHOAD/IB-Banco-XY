@@ -19,7 +19,7 @@
 
     var active = accounts_User.Sum(x => x.Balance_Actual);
     var credito = credits_card_User.Sum(x => x.Balance_disponible);
-    var prestamos = prestamos_user.Sum(x => x.Balance_Apertura-x.Total_Pagado);
+    var prestamos = prestamos_user.Sum(x => x.Balance_Apertura - x.Total_Pagado);
 
 }
 

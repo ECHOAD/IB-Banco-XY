@@ -25,6 +25,9 @@ namespace Contratos.Repository_Contracts
 
         public ITransferenciaCuentaRepository TransferenciaCuentaRepository { get; }
 
+        public ITransferenciaCreditoRepository TransferenciaCreditoRepository { get; }
+
+
 
         //Transactional Actions
         Task Save();

@@ -1,0 +1,122 @@
+﻿@model Entidades.TransferenciaCredito
+@inject ITarjetaCreditoBL tarjetaCreditoBL;
+
+@{
+    ViewData["Title"] = "Transacciones";
+    int id_tarjeta = 0;
+
+    if (ViewData.ContainsKey("id_creditCard"))
+    {
+        id_tarjeta = (int)ViewData["id_creditCard"];
+
+    }
+
+    var user_id = User.Claims.First().Value;
+
+
+}
+
+@section CSS{
+<link rel="stylesheet" href="~/css/forms.css" />
+
+
+
+<style>
+    .sectionControl {
+        padding: 30px;
+    }
+
+    @@media (max-width: 600px) and (min-width:200px) {
+        .materialContainer {
+            height: 600px;
+            width: calc(var(--vh, 1vh) * 40);
+            padding: 0;
+        }
+
+        .navbar {
+            width: calc(var(--vh, 1vh) * 43);
+        }
+
+        .btn-action {
+            margin-top: 150px;
+        }
+    }
+
+</style>
+
+}
+
+
+
+<section class="container materialContainer">
+    <div class="row">
+        <div class="container btn-controls">
+            <div clas="row">
+                <div>
+                    <a class="btn btn-control" href="/dashboard">
+                        <i class="bi bi-arrow-left-circle-fill icon">
+                        </i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 form-header">
+            <h2 class="title_formHeader">Transacciones</h2>
+        </div>
+    </div>
+    <div class="col-12">
+        <form asp-action="/transact/create" class="form" id="formTransact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <input type="hidden" value="@id_tarjeta" id="creditoOrigen" required />
+
+            <div class="col-sm-12" id="credito_origen">
+                <h6>Origen</h6>
+                @await Html.PartialAsync("Partials/CreditCard/CreditCardDetails",null, new ViewDataDictionary (ViewData)
+                { {"input_id","id_creditCard"},
+                {"id_balanceAvailable","id_balanceAvailable"},
+                {"have_Details",Boolean.Parse("False")}
+                })
+
+            </div>
+
+            <div class="col-sm-12 mb-3" id="cuenta_destino">
+                <h6>No. Cuenta</h6>
+                @await Html.PartialAsync("Partials/BankAccounts/_comboAccountList",null, new ViewDataDictionary (ViewData)
+                {{"Id_Usuario",user_id},
+                {"name_input","cuenta_origen"},
+                {"id_input","cuenta_origen"},
+                {"class_input","combo-box inputs"}
+                })
+            </div>
+
+
+            <div class="form-group col-sm-12 mt-2" id="sectionControl">
+                <input class="form-control inputs input-money" placeholder="Cantidad a Transferir" style="border-radius:4px;" id="MontoMask" unmaskRef="#monto" value="" required />
+
+                <input asp-for="MontoActual" type="hidden" style="display:none" id="monto" />
+
+                <span asp-validation-for="MontoActual" class="text-danger"></span>
+                <input type="button" value="Transferir" onclick="PostTransaccionCredit()" class="btn btn-submit col-12" />
+            </div>
+            <div class="form-group btn-action col-12">
+            </div>
+        </form>
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+@{
+await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
+}
+
+<script src="~/js/transacts.js"></script>
+
+}
