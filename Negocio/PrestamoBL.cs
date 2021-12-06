@@ -64,10 +64,10 @@ namespace Negocio
         public async Task PayPrestamo(EstadoPrestamo estadoPrestamo)
         {
 
-            if (estadoPrestamo.Monto_pagado < 0)
+            if (estadoPrestamo.Monto_pagado <= 0)
                 throw new UnnexpectedValueException("El monto no puede ser menor que cero");
 
-            var transaction = _repositoryWrapper.BeginTransaction();
+            var transaction = await _repositoryWrapper.BeginTransaction();
 
             try
             {
@@ -87,30 +87,40 @@ namespace Negocio
                     Cuenta = accountOrigin,
                     Accion = "Retiro",
                     Descripcion = $"Pago del prestamo de numero XXXX{Prestamo.Codigo_Prestamo[^4..]}",
-                    Monto = estadoPrestamo.Monto_pagado
+                    Monto = estadoPrestamo.Monto_pagado,
+
                 });
 
                 Prestamo.Total_Pagado += estadoPrestamo.Monto_pagado;
 
                 await _repositoryWrapper.PrestamoRepository.Update(Prestamo);
 
-                estadoPrestamo.Monto_restante = Prestamo.Total_Pagado;
+                estadoPrestamo.Monto_restante = Prestamo.Balance_Apertura - Prestamo.Total_Pagado;
+
+
 
                 await _repositoryWrapper.EstadoPrestamoRepository.Create(estadoPrestamo);
+
+                await _repositoryWrapper.Save();
+
+                await transaction.CommitAsync();
 
 
 
             }
             catch (UnnexpectedValueException ex)
             {
+                await transaction.RollbackAsync();
                 throw ex;
             }
             catch (NoSufficientAmountException ex)
             {
+                await transaction.RollbackAsync();
                 throw ex;
             }
             catch (Exception)
             {
+                await transaction.RollbackAsync();
 
                 throw new Exception("Hubo un problema al procesar la solicitud, si el problema perdura contacte a la administracion");
             }

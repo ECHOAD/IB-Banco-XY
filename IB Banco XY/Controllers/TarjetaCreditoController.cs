@@ -4,6 +4,7 @@ using Entidades;
 using Microsoft.AspNetCore.Mvc;
 using Negocio.Exceptions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IB_Banco_XY.Controllers
@@ -12,12 +13,15 @@ namespace IB_Banco_XY.Controllers
     {
         private readonly INumberGenerator<TarjetaCredito> _creditCardNumberGenerator;
         private readonly ITarjetaCreditoBL _tarjetaCreditoBL;
+        private readonly IEstadoCreditoBL _estadoCreditoBL;
 
         public TarjetaCreditoController(ITarjetaCreditoBL tarjetaCreditoBL
-            , INumberGenerator<TarjetaCredito> creditCardNumberGenerator)
+            , INumberGenerator<TarjetaCredito> creditCardNumberGenerator,
+            IEstadoCreditoBL estadoCreditoBL)
         {
             _creditCardNumberGenerator = creditCardNumberGenerator;
             _tarjetaCreditoBL = tarjetaCreditoBL;
+            _estadoCreditoBL = estadoCreditoBL;
         }
         [Route("/tarjetaCredito/create")]
         public async Task<IActionResult> Create()
@@ -94,6 +98,49 @@ namespace IB_Banco_XY.Controllers
 
 
         }
+
+
+        [HttpGet]
+        [Route("/credito/estadoCredito/{id_credit}")]
+        public async Task<IActionResult> EstadoDeCuenta(int id_credit)
+        {
+            var credito = await _tarjetaCreditoBL.FindById(id_credit);
+
+            return View("View_EstadoCredito", credito);
+        }
+
+
+        [HttpGet]
+        [Route("credito/estadocredito/partial")]
+        public async Task<IActionResult> EstadoDeCreditoDetail(int? id_Credito, DateTime? desde, DateTime? hasta)
+        {
+            try
+            {
+
+                if (!id_Credito.HasValue)
+                    return NotFound();
+
+                if (!desde.HasValue || !hasta.HasValue)
+                {
+                    desde = DateTime.Now.AddMonths(-1);
+                    hasta = DateTime.Now;
+                }
+
+                var EstadosCredito = (await _estadoCreditoBL.FindByCondition(x => x.Id_TarjetaCredito == id_Credito.Value && x.Fecha > desde.Value
+                && x.Fecha.Value < hasta)).AsEnumerable();
+
+                return PartialView("EstadoDeCredito", EstadosCredito);
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = -1, Message = "Hubo un fallo con la peticion " + e.Message });
+
+            };
+        }
+
+
 
     }
 }

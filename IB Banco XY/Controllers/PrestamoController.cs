@@ -2,7 +2,9 @@
 using Contratos.Helpers;
 using Entidades;
 using Microsoft.AspNetCore.Mvc;
+using Negocio.Exceptions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace IB_Banco_XY.Controllers
@@ -11,14 +13,15 @@ namespace IB_Banco_XY.Controllers
     {
         private readonly INumberGenerator<Prestamo> _prestamoNumberGenerator;
         private readonly IPrestamoBL _prestamoBL;
+        private readonly IEstadoPrestamoBL _estadoPrestamoBL;
 
         public PrestamoController(
             INumberGenerator<Prestamo> prestamoNumberGenerator,
-            IPrestamoBL prestamoBL)
+            IPrestamoBL prestamoBL, IEstadoPrestamoBL estadoPrestamoBL)
         {
             _prestamoNumberGenerator = prestamoNumberGenerator;
             _prestamoBL = prestamoBL;
-
+            _estadoPrestamoBL = estadoPrestamoBL;
         }
 
         [Route("/prestamo/create")]
@@ -48,9 +51,7 @@ namespace IB_Banco_XY.Controllers
             }
             catch (Exception)
             {
-
                 return BadRequest(new { status = -1, message = $"Tarjeta de credito de  No [{prestamo.Codigo_Prestamo}] no puedo ser creada exitosamente" });
-
 
             }
         }
@@ -67,17 +68,14 @@ namespace IB_Banco_XY.Controllers
 
 
         [HttpPost]
-        [Route("/prestamo/paycredit")]
-        public async Task<IActionResult> PayCreditCardOwms([FromBody] EstadoPrestamo pagoPrestamo)
+        [Route("/prestamo/payprestamo")]
+        public async Task<IActionResult> PayPrestamosOwms([FromBody] EstadoPrestamo pagoPrestamo)
         {
-
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
-                    await _prestamoBL.PayCreditCard(pagoCredito);
+                    await _prestamoBL.PayPrestamo(pagoPrestamo);
 
                     return Ok(new { Status = 1, Message = "Pago realizado correctamente" });
                 }
@@ -95,12 +93,53 @@ namespace IB_Banco_XY.Controllers
             }
             catch (Exception ex)
             {
-
-                return BadRequest(new { status = -1, ex.Message });
-
+                return Ok(new { status = -1, ex.Message });
             }
 
-
         }
+
+
+        [HttpGet]
+        [Route("/prestamo/estadoPrestamo/{id_prestamo}")]
+        public async Task<IActionResult> EstadoDePrestamo(int id_prestamo)
+        {
+            var prestamo = await _prestamoBL.FindById(id_prestamo);
+
+            return View("View_EstadoPrestamo", prestamo);
+        }
+
+
+        [HttpGet]
+        [Route("prestamo/estadoprestamo/partial")]
+        public async Task<IActionResult> EstadoDePrestamoDetail(int? id_prestamo, DateTime? desde, DateTime? hasta)
+        {
+            try
+            {
+
+                if (!id_prestamo.HasValue)
+                    return NotFound();
+
+                if (!desde.HasValue || !hasta.HasValue)
+                {
+                    desde = DateTime.Now.AddMonths(-1);
+                    hasta = DateTime.Now;
+                }
+
+                var EstadosCredito = (await _estadoPrestamoBL.FindByCondition(x => x.Id_prestamo == id_prestamo.Value && x.Fecha > desde.Value
+                && x.Fecha.Value < hasta)).AsEnumerable();
+
+                return PartialView("EstadoPrestamo", EstadosCredito);
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { status = -1, Message = "Hubo un fallo con la peticion " + e.Message });
+
+            };
+        }
+
+
     }
+
 }

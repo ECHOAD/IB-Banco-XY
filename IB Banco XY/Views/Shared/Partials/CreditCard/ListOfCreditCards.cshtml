@@ -14,7 +14,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">Credito asignado: @creditcard.Balance.ToString("C",CultureInfo.CurrentCulture)</h6>
                         <h6 class="card-subtitle mb-2 text-muted">Credito disponible: @creditcard.Balance_disponible.ToString("C",CultureInfo.CurrentCulture)</h6>
                         <div class="acction_cards">
-                            <a href="cuenta/estadoCuenta/@creditcard.Id" class="card-link">Estados</a>
+                            <a href="/credito/estadoCredito/@creditcard.Id" class="card-link">Estados</a>
                             <a href="/paycreditcard/@creditcard.Id" class="card-link">Pago de Tarjeta</a>
                         </div>
                     </div>

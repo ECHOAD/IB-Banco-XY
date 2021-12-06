@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Contratos.BL_Contracts
 {
-    public interface IEstadoCredito
+    public interface IEstadoCreditoBL
     {
         Task<List<EstadoCredito>> GetAll();
 

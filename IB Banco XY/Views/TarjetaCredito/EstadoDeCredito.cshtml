@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Entidades.EstadoCredito>
+
+
+<div class="col-12" style="background:rgba(31, 66, 180, 0.664); height:50px; padding-bottom:40px;">
+    <h2 class="title_formHeader p-2" style="color:white;">Estado de Cuenta</h2>
+</div>
+<table class="table_minimalist">
+    <thead>
+        <tr class="table-header">
+            <th class="header__item">
+                Cuenta de Origen
+            </th>
+            <th class="header__item ">
+                Pagado
+            </th>
+            <th class="header__item ">
+                Disponible
+            </th>
+            <th class="header__item ">
+                Fecha
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-row">
+
+                <td class="table-data">
+                    xxxxxxx@(item.CuentaOrigen.Codg_Cuenta[^4..])
+                </td>
+                <td class="table-data">
+                    @item.Pagado.ToString("C", CultureInfo.CurrentCulture)
+                </td>
+                <td class="table-data">
+                    @item.Disponible.ToString("C", CultureInfo.CurrentCulture)
+                </td>
+                <td class="table-data">
+                    @item.Fecha
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
