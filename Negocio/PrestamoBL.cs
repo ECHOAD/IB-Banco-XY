@@ -76,7 +76,7 @@ namespace Negocio
 
                 accountOrigin.Balance_Actual -= estadoPrestamo.Monto_pagado;
 
-                if (accountOrigin.Balance_Actual < 0)
+                if (accountOrigin.Balance_Actual <= 0)
                     throw new NoSufficientAmountException($"La cuenta no contiene suficiente balance para pagar dicha cantidad");
 
                 await _repositoryWrapper.CuentaAhorroRepository.Update(accountOrigin);

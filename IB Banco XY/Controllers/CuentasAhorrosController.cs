@@ -59,7 +59,6 @@ namespace IB_Banco_XY.Controllers
             CuentasAhorro cuentaAhorro;
 
 
-
             cuentaAhorro = new CuentasAhorro { Id_Usuario = User.Claims.First().Value, Codg_Cuenta = _numberGenerator.Generate_a_Code() };
 
 
@@ -224,7 +223,6 @@ namespace IB_Banco_XY.Controllers
         {
             try
             {
-
                 if (!id_cuenta.HasValue)
                     return BadRequest();
 

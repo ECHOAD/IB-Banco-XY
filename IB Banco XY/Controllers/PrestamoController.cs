@@ -69,7 +69,7 @@ namespace IB_Banco_XY.Controllers
 
         [HttpPost]
         [Route("/prestamo/payprestamo")]
-        public async Task<IActionResult> PayPrestamosOwms([FromBody] EstadoPrestamo pagoPrestamo)
+        public async Task<IActionResult> PayPrestamosOwes([FromBody] EstadoPrestamo pagoPrestamo)
         {
             try
             {
