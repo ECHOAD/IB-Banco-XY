@@ -87,14 +87,17 @@ namespace Negocio
                     Cuenta = accountOrigin,
                     Accion = "Retiro",
                     Descripcion = $"Pago del prestamo de numero XXXX{Prestamo.Codigo_Prestamo[^4..]}",
-                    Monto = estadoPrestamo.Monto_pagado
+                    Monto = estadoPrestamo.Monto_pagado,
+
                 });
 
                 Prestamo.Total_Pagado += estadoPrestamo.Monto_pagado;
 
                 await _repositoryWrapper.PrestamoRepository.Update(Prestamo);
 
-                estadoPrestamo.Monto_restante = Prestamo.Total_Pagado;
+                estadoPrestamo.Monto_restante = Prestamo.Balance_Apertura - Prestamo.Total_Pagado;
+
+
 
                 await _repositoryWrapper.EstadoPrestamoRepository.Create(estadoPrestamo);
 

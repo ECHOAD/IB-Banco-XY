@@ -34,6 +34,7 @@ namespace Entidades
         [ForeignKey("Id_TarjetaCredito")]
         public TarjetaCredito Tarjeta { get; set; }
 
+        [ForeignKey("Id_CuentaOrigen")]
         public CuentasAhorro CuentaOrigen { get; set; }
     }
 }
