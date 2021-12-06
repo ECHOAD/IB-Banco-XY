@@ -1,4 +1,5 @@
 ﻿@using Contratos;
+@using System.Security.Claims
 @inject ICuentaAhorroBL cuenta_ahorroBL;
 @{
     string acount_number = ViewData.ContainsKey("no_cuenta") ? (string)ViewData["no_cuenta"] : "";
@@ -37,7 +38,9 @@
     <div class="card-body">
         <h5 class="card-title">Cuenta Bancaria</h5>
         <h6 class="card-subtitle mb-2 text-muted">Numero de cuenta: <strong>@cuenta_origen.Codg_Cuenta</strong></h6>
-        <h6 class="card-subtitle mb-2 text-muted">Balance Actual: <strong style="color:@(cuenta_origen.Balance_Actual > 0? "green":"red")">@cuenta_origen.Balance_Actual.ToString("C", CultureInfo.CurrentCulture)</strong></h6>
-
+        @if (User.FindFirst(ClaimTypes.NameIdentifier).Value == cuenta_origen.Id_Usuario)
+        {
+            <h6 class="card-subtitle mb-2 text-muted">Balance Actual: <strong style="color:@(cuenta_origen.Balance_Actual > 0? "green":"red")">@cuenta_origen.Balance_Actual.ToString("C", CultureInfo.CurrentCulture)</strong></h6>
+        }
     </div>
 </div>

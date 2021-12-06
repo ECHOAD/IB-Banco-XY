@@ -72,6 +72,7 @@ namespace IB_Banco_XY
 
             app.UseRouting();
 
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -96,8 +97,6 @@ namespace IB_Banco_XY
             services.AddScoped<ITarjetaCreditoBL, TarjetaCreditoBL>();
             services.AddScoped<IEstadoCreditoBL, EstadoCreditoBL>();
             services.AddScoped<IEstadoPrestamoBL, EstadoPrestamoBL>();
-
-
             services.AddScoped<IPrestamoBL, PrestamoBL>();
 
 

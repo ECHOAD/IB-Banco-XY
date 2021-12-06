@@ -6,6 +6,7 @@ namespace IB_Banco_XY.Controllers
     [Authorize]
     public class DashBoardController : Controller
     {
+        [Route("/")]
         [Route("/dashboard")]
         public IActionResult DashBoard()
         {

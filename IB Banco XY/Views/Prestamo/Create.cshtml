@@ -108,10 +108,17 @@
 
         Solicitudes('/prestamo/create','POST',data, async (res)=> {
 
-            CustomSucess(undefined,res.message)
-            var time = setTimeout(() => {
-          location.href = "/dashboard";
-        }, 1500);
+            if(res.status==1){
+                  CustomSucess(undefined,res.message)
+                var time = setTimeout(() => {
+              location.href = "/dashboard";
+               }, 1500);
+
+            }else{
+                CustomError(undefined,res.Message)
+            }
+
+
 
 
         })

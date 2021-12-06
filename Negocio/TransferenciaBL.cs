@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Negocio.Exceptions;
 
 namespace Negocio
 {
@@ -55,28 +56,46 @@ namespace Negocio
 
         public async Task RealizeTransaction(TransferenciaCuenta entity)
         {
-            entity.FechaRealizada = DateTime.Now;
-
             var transaction = await repositoryWrapper.BeginTransaction();
 
-            var CuentaOrigen = await repositoryWrapper.CuentaAhorroRepository.FindById(entity.Id_CuentaOrigen);
-            var cuentaDestino = await repositoryWrapper.CuentaAhorroRepository.FindById(entity.Id_CuentaDestino);
+            try
+            {
 
-            CuentaOrigen.Balance_Actual -= entity.MontoActual;
-            cuentaDestino.Balance_Actual += entity.MontoActual;
-
-            await cuentaAhorroBL.Update(CuentaOrigen);
-            await cuentaAhorroBL.Update(cuentaDestino);
+                if (entity.MontoActual <= 0)
+                    throw new UnnexpectedValueException("El monto ingresado no puede ser menor o igual cero");
 
 
-            await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Retiro", Descripcion = $"Transferencia a : No. Cuenta: {CuentaOrigen.Codg_Cuenta}", Cuenta = CuentaOrigen, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
-            await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Deposito", Descripcion = $"Transferencia de: No. Cuenta:{cuentaDestino.Codg_Cuenta}", Cuenta = cuentaDestino, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
+                entity.FechaRealizada = DateTime.Now;
 
 
-            await repositoryWrapper.TransferenciaCuentaRepository.Create(entity);
 
-            await repositoryWrapper.Save();
-            await transaction.CommitAsync();
+                var CuentaOrigen = await repositoryWrapper.CuentaAhorroRepository.FindById(entity.Id_CuentaOrigen);
+                var cuentaDestino = await repositoryWrapper.CuentaAhorroRepository.FindById(entity.Id_CuentaDestino);
+
+                if (CuentaOrigen.Balance_Actual <= 0)
+                    throw new NoSufficientAmountException($"La cuenta no tiene suficiente balance para hacer la transferencia");
+
+                CuentaOrigen.Balance_Actual -= entity.MontoActual;
+                cuentaDestino.Balance_Actual += entity.MontoActual;
+
+                await cuentaAhorroBL.Update(CuentaOrigen);
+                await cuentaAhorroBL.Update(cuentaDestino);
+
+
+                await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Retiro", Descripcion = $"Transferencia a : No. Cuenta: {CuentaOrigen.Codg_Cuenta}", Cuenta = CuentaOrigen, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
+                await estadoCuentaBL.Save(new EstadoCuenta { Accion = "Deposito", Descripcion = $"Transferencia de: No. Cuenta:{CuentaOrigen.Codg_Cuenta}", Cuenta = cuentaDestino, Monto = entity.MontoActual, Fecha = entity.FechaRealizada });
+
+
+                await repositoryWrapper.TransferenciaCuentaRepository.Create(entity);
+
+                await repositoryWrapper.Save();
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception("No se pudo realizar la transaccion");
+            }
 
         }
 
