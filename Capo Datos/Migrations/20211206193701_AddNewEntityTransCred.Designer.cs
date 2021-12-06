@@ -4,14 +4,16 @@ using Capo_Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capo_Datos.Migrations
 {
     [DbContext(typeof(InternetBanking))]
-    partial class InternetBankingModelSnapshot : ModelSnapshot
+    [Migration("20211206193701_AddNewEntityTransCred")]
+    partial class AddNewEntityTransCred
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

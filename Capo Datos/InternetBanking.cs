@@ -15,9 +15,11 @@ namespace Capo_Datos
         public virtual DbSet<CuentasAhorro> CuentasAhorro { get; set; }
         public virtual DbSet<TarjetaCredito> TarjetasCredito { get; set; }
         public virtual DbSet<EstadoCredito> EstadosCredito { get; set; }
-        public virtual DbSet<Prestamo> Prestamos{ get; set; }
+        public virtual DbSet<Prestamo> Prestamos { get; set; }
         public virtual DbSet<EstadoPrestamo> EstadosPrestamo { get; set; }
-        public virtual DbSet<TransferenciaCuenta> Transferencias { get; set; }
+        public virtual DbSet<TransferenciaCuenta> TransferenciasCuenta { get; set; }
+        public virtual DbSet<TransferenciaCredito> TransferenciasCredito { get; set; }
+
 
 
     }

@@ -11,6 +11,11 @@
 
     bool isDebt = true;
 
+    bool haveDetails = ViewData.ContainsKey("have_Details") ? (bool)ViewData["have_Details"] : true;
+
+
+
+
 
     TarjetaCredito tarjetaCredito = await tarjetaCreditoBl.FindById(id_creditCard);
 
@@ -52,7 +57,7 @@
 <div class="card card_detail cardsCreditCardDetail">
     <div class="card-body">
         <h5 class="card-title">Tarjeta de Credito</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Numero de cuenta: <strong>@String.Format("{0:0000 0000 0000 0000}",double.Parse(tarjetaCredito.Numero_tarjetaCredito))</strong></h6>
+        <h6 class="card-subtitle mb-2 text-muted">Numero de cuenta: <strong> xxxx xxxx xxxx @tarjetaCredito.Numero_tarjetaCredito[^4..]</strong></h6>
         <h6 class="card-subtitle mb-2 text-muted">Credito Asignado: @tarjetaCredito.Balance.ToString("C", CultureInfo.CurrentCulture)</h6>
         <h6 class="card-subtitle mb-2 text-muted">
             Credito Disponible: <strong style="color:@(tarjetaCredito.Balance_disponible > 0? "green":"red")">
@@ -60,12 +65,18 @@
             </strong>
         </h6>
 
-        <p style="@(isDebt?"color:red":"color:green")">
-            @(isDebt ? $"El Credito a pagar es de {CreditoStatus.ToString("C",CultureInfo.CurrentCulture)}"
+        @if (haveDetails)
+        {
+            <p style="@(isDebt?"color:red":"color:green")">
+                @(isDebt ? $"El Credito a pagar es de {CreditoStatus.ToString("C",CultureInfo.CurrentCulture)}"
             : $"Hay un credito acumulado de {CreditoStatus.ToString("C",CultureInfo.CurrentCulture)}." )
-        </p>
+            </p>
+        }
     </div>
-    <div class="card-detail detail-optionalInfo" >
-        <p class="text-center  text-white"> @(isDebt ? "": "Usted no tiene credito en deuda, si paga, esto se le abonara a su credito disponible")</p>
-    </div>
+    @if (haveDetails)
+    {
+        <div class="card-detail detail-optionalInfo">
+            <p class="text-center  text-white"> @(isDebt ? "": "Usted no tiene credito en deuda, si paga, esto se le abonara a su credito disponible")</p>
+        </div>
+    }
 </div>
